@@ -1,0 +1,11 @@
+releases/
+obj/
+bin/
+*.suo
+*.user
+*.vspx
+*.psess
+*.rar
+.vs/
+packages/*
+*.7z
