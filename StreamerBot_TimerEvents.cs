@@ -50,14 +50,10 @@ namespace LiveSplit.StreamerBot
 
 				if (currentTime > pbTime)
 				{
-					//Todo - get segment times!
-					var personalBestSegmentTime = state.Run[state.CurrentSplitIndex - 1].BestSegmentTime[state.CurrentTimingMethod];
 					streamerBotConnection.SendMessage(new StreamerBot_Event.OnRedSplit(state));
 				}
 				else
 				{
-					//Todo - get segment times!
-					var personalBestSegmentTime = state.Run[state.CurrentSplitIndex - 1].BestSegmentTime[state.CurrentTimingMethod];
 					streamerBotConnection.SendMessage(new StreamerBot_Event.OnGreenSplit(state));
 				}
 			}

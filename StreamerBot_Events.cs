@@ -3,6 +3,7 @@ using LiveSplit.StreamerBot.Extensions;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 using System;
+using System.Linq;
 
 namespace LiveSplit.StreamerBot
 {
@@ -11,15 +12,13 @@ namespace LiveSplit.StreamerBot
 		[JsonConverter(typeof(StringEnumConverter))]
 		public enum EventTypeE
 		{
+			Invalid,
 			OnStart,
 			OnReset,
 			OnPause,
 			OnResume,
-			OnSplit,
 			OnSkipSplit,
 			OnUndoSplit,
-			OnGold,
-			OnGoldSplit,
 			OnGreenSplit,
 			OnRedSplit
 		}
@@ -54,18 +53,11 @@ namespace LiveSplit.StreamerBot
 
 		public class OnRedSplit : StreamerBot_Event_OnSplit
 		{
-			public override EventTypeE EventType => EventTypeE.OnGreenSplit;
+			public override EventTypeE EventType => EventTypeE.OnRedSplit;
 
 			internal OnRedSplit(LiveSplitState state) : base(state) { }
 		}
 
-
-		public class OnGoldSplit : StreamerBot_Event_OnSplit
-		{
-			public override EventTypeE EventType => EventTypeE.OnGreenSplit;
-
-			internal OnGoldSplit(LiveSplitState state) : base(state) { }
-		}
 
 		public class OnResume : StreamerBot_Event
 		{
@@ -90,7 +82,7 @@ namespace LiveSplit.StreamerBot
 
 		public class StreamerBot_Event_OnSplit : StreamerBot_Event
 		{
-			public override EventTypeE EventType => EventTypeE.OnSplit;
+			public override EventTypeE EventType => EventTypeE.Invalid;
 			public TimeSpan LastSplitTime;
 			public TimeSpan LastSplitGameTime;
 			public TimeSpan LastSplitRealTime;
@@ -101,7 +93,7 @@ namespace LiveSplit.StreamerBot
 			public string PreviousSplitName;
 			public string CurrentSplitName;
 			public int CurrentSplitIndex;
-			public bool WasLastSplitAheadOfPB;
+			public bool WasLastSplitGold;
 
 			internal StreamerBot_Event_OnSplit(LiveSplitState state) : base(state)
 			{
@@ -110,10 +102,12 @@ namespace LiveSplit.StreamerBot
 
 				if (state.CurrentSplitIndex > 0)
 				{
-					var lastSplit = state.Run[state.CurrentSplitIndex - 1];
-					var personalBestSegmentTime = lastSplit.BestSegmentTime[state.CurrentTimingMethod].GetValueOrDefault();
-					var lastSplitTime = lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault();
-					WasLastSplitAheadOfPB = lastSplitTime <= personalBestSegmentTime;
+					ISegment lastSplit = state.Run[state.CurrentSplitIndex - 1];
+
+					TimeSpan personalBestSegmentTime = lastSplit.BestSegmentTime[state.CurrentTimingMethod].GetValueOrDefault();
+					TimeSpan lastSegmentTime = lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault() - (state.CurrentSplitIndex - 2 >= 0 ? state.Run[state.CurrentSplitIndex - 2].SplitTime[state.CurrentTimingMethod].GetValueOrDefault() : TimeSpan.Zero);
+
+					this.WasLastSplitGold = lastSegmentTime < personalBestSegmentTime;
 
 					this.PreviousSplitName = lastSplit.Name;
 					this.SplitTimeDifference = lastSplit.Comparisons[state.CurrentComparison][state.CurrentTimingMethod].GetValueOrDefault() - lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault();
