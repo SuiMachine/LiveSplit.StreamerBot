@@ -57,10 +57,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomLiveSplitAttributes.cs" />
-    <Compile Include="StreamerBot_Events.cs" />
+    <Compile Include="StreamerBot_Events\StreamerBot_Events.cs" />
     <Compile Include="Extensions.cs" />
     <Compile Include="StreamerBot_Component.cs" />
     <Compile Include="StreamerBotFactory.cs" />
+    <Compile Include="StreamerBot_Events\StreamerBot_Events_Run.cs" />
+    <Compile Include="StreamerBot_Events\StreamerBot_Events_SplitData.cs" />
+    <Compile Include="StreamerBot_Events\StreamerBot_Events_Splits.cs" />
     <Compile Include="StreamerBot_Settings.cs">
       <SubType>UserControl</SubType>
     </Compile>

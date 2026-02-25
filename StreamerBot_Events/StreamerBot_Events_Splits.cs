@@ -1,28 +1,10 @@
 ﻿using LiveSplit.Model;
-using LiveSplit.StreamerBot.Extensions;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Converters;
 using System;
-using System.Linq;
 
-namespace LiveSplit.StreamerBot
+namespace LiveSplit.Streamerbot.StreamerBot_Events
 {
-	public abstract class StreamerBot_Event
+	public class StreamerBot_Events_Splits
 	{
-		[JsonConverter(typeof(StringEnumConverter))]
-		public enum EventTypeE
-		{
-			Invalid,
-			OnStart,
-			OnReset,
-			OnPause,
-			OnResume,
-			OnSkipSplit,
-			OnUndoSplit,
-			OnGreenSplit,
-			OnRedSplit
-		}
-
 		public class OnStart : StreamerBot_Event
 		{
 			public override EventTypeE EventType => EventTypeE.OnStart;
@@ -122,23 +104,5 @@ namespace LiveSplit.StreamerBot
 				}
 			}
 		}
-
-		protected StreamerBot_Event(LiveSplitState state)
-		{
-			if (state == null)
-				return;
-
-			this.AttemptCount = state.Run.AttemptCount;
-			this.TimingMethod = state.CurrentTimingMethod;
-			this.IsGameTimeInitiated = state.IsGameTimeInitialized;
-			this.CurrentComparison = state.CurrentComparison;
-		}
-
-		public abstract EventTypeE EventType { get; }
-		public int AttemptCount = 0;
-		[JsonConverter(typeof(StringEnumConverter))]
-		public TimingMethod TimingMethod;
-		public bool IsGameTimeInitiated;
-		public string CurrentComparison;
 	}
 }

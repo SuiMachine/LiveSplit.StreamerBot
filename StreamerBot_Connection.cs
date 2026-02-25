@@ -1,4 +1,5 @@
 ﻿using LiveSplit.Model;
+using LiveSplit.Streamerbot.StreamerBot_Events;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
@@ -13,7 +14,6 @@ namespace LiveSplit.StreamerBot
 		private static StreamerBot_Connection instance;
 		private StreamerBot_Settings m_settingsForm;
 		private StreamerBot_TimerEvents m_timerEvents = new StreamerBot_TimerEvents();
-		public LiveSplitState LiveSplitState { get; private set; }
 
 		public Action<bool> OnConnectionChanged;
 		private WebSocket webSocket;
@@ -104,20 +104,21 @@ namespace LiveSplit.StreamerBot
 
 		public void SetFormReference(StreamerBot_Settings form) => m_settingsForm = form;
 
-		public void RegisterEvents(LiveSplitState state)
-		{
-			this.LiveSplitState = state;
-			m_timerEvents.RegisterEvents(state, this);
-		}
+		public void RegisterEvents(LiveSplitState state) => m_timerEvents.RegisterEvents(state, this);
 
 		public void UnregisterEvents(LiveSplitState state) => m_timerEvents.UnregisterEvents(state);
 
-		public void SendMessage(StreamerBot_Event message)
+		public void SendMessage(StreamerBot_Event message, bool includeNulls = false)
 		{
 			if (IsConnected)
 			{
 #if DEBUG
-				var convert = JsonConvert.SerializeObject(message, Formatting.Indented);
+				var convert = JsonConvert.SerializeObject(message, Formatting.Indented, new JsonSerializerSettings()
+				{
+					NullValueHandling = includeNulls ? NullValueHandling.Include : NullValueHandling.Ignore
+				});
+
+				Debug.WriteLine($"Sending: {convert}");
 #else
 				var convert = JsonConvert.SerializeObject(message);
 #endif
