@@ -18,7 +18,9 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			OnUndoSplit,
 			OnGreenSplit,
 			OnRedSplit,
-			OnSplitsUpdated
+			OnGameTimePaused,
+			OnGameTimeResumed,
+			OnSplitsUpdated,
 		}
 
 		protected StreamerBot_Event(LiveSplitState state)
@@ -26,6 +28,5 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 		}
 
 		public abstract EventTypeE EventType { get; }
-
 	}
 }

@@ -62,6 +62,29 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			internal OnPause(LiveSplitState state) : base(state) { }
 		}
 
+		public class OnGameTimePaused : StreamerBot_Event
+		{
+			public override EventTypeE EventType => EventTypeE.OnGameTimePaused;
+			public TimeSpan CurrentGameTime;
+			public TimeSpan CurrentRealTime;
+			public TimeSpan CurrentLoadTime;
+
+			internal OnGameTimePaused(LiveSplitState state) : base(state)
+			{
+				this.CurrentGameTime = state.CurrentTime[TimingMethod.GameTime].GetValueOrDefault();
+				this.CurrentRealTime = state.CurrentTime[TimingMethod.RealTime].GetValueOrDefault();
+				this.CurrentLoadTime = state.LoadingTimes;
+			}
+		}
+
+		public class OnGameTimeResumed : OnGameTimePaused
+		{
+			public override EventTypeE EventType => EventTypeE.OnGameTimeResumed;
+
+			internal OnGameTimeResumed(LiveSplitState state) : base(state) { }
+		}
+
+
 		public class StreamerBot_Event_OnSplit : StreamerBot_Event
 		{
 			public override EventTypeE EventType => EventTypeE.Invalid;
@@ -69,9 +92,6 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			public TimeSpan LastSplitGameTime;
 			public TimeSpan LastSplitRealTime;
 			public TimeSpan SplitTimeDifference;
-			public double LastSplitTimeSeconds;
-			public double LastSplitGameTimeSeconds;
-			public double LastSplitRealTimeSeconds;
 			public string PreviousSplitName;
 			public string CurrentSplitName;
 			public int CurrentSplitIndex;
@@ -97,10 +117,6 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 					this.LastSplitTime = lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault();
 					this.LastSplitGameTime = lastSplit.SplitTime[TimingMethod.GameTime].GetValueOrDefault();
 					this.LastSplitRealTime = lastSplit.SplitTime[TimingMethod.RealTime].GetValueOrDefault();
-
-					this.LastSplitTimeSeconds = LastSplitTime.TotalSeconds;
-					this.LastSplitGameTimeSeconds = LastSplitGameTime.TotalSeconds;
-					this.LastSplitRealTimeSeconds = LastSplitRealTime.TotalSeconds;
 				}
 			}
 		}

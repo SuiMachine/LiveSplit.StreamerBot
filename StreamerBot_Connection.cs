@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using WebSocketSharp;
 
 
@@ -119,6 +120,7 @@ namespace LiveSplit.StreamerBot
 				});
 
 				Debug.WriteLine($"Sending: {convert}");
+
 #else
 				var convert = JsonConvert.SerializeObject(message);
 #endif

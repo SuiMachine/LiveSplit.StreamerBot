@@ -1,13 +1,106 @@
 ﻿using LiveSplit.Model;
 using System;
+using System.Diagnostics;
 
 namespace LiveSplit.Streamerbot.StreamerBot_Events
 {
 	internal class StreamerBot_Events_SplitData : StreamerBot_Event
 	{
+		[DebuggerDisplay("Split - {Name} | PB Split Game Time: {PersonalBestSplitGameTime} | PB Split Real Time: {PersonalBestSplitRealTime} | Best Segment Game Time: {BestSegmentGameTime} | Best Segment Real Time: {BestSegmentRealTime}")]
+		public class SplitData
+		{
+			public string Name;
+			public TimeSpan? PersonalBestSplitGameTime;
+			public TimeSpan? PersonalBestSplitRealTime;
+			public TimeSpan? BestSegmentGameTime;
+			public TimeSpan? BestSegmentRealTime;
+
+			public static bool SplitsChanged(SplitData a, SplitData b)
+			{
+				if (ReferenceEquals(a, b))
+					return true;
+				if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+					return false;
+				return a.Name == b.Name
+					&& a.PersonalBestSplitGameTime == b.PersonalBestSplitGameTime
+					&& a.PersonalBestSplitRealTime == b.PersonalBestSplitRealTime
+					&& a.BestSegmentGameTime == b.BestSegmentGameTime
+					&& a.BestSegmentRealTime == b.BestSegmentRealTime;
+			}
+		}
+
 		public StreamerBot_Events_SplitData(LiveSplitState state) : base(state)
 		{
+			GameName = state.Run.GameName;
+			Category = state.Run.CategoryName;
+			SplitCount = state.Run.Count;
+			AutosplitterPresent = (state.Run.AutoSplitter?.IsActivated ?? false) || state.IsGameTimeInitialized;
+			AttemptCount = state.Run.AttemptCount;
+			Offset = state.Run.Offset;
+			Splits = new SplitData[state.Run.Count];
 
+			for (int i = 0; i < Splits.Length; i++)
+			{
+				Splits[i] = new SplitData()
+				{
+					Name = state.Run[i].Name,
+					PersonalBestSplitGameTime = state.Run[i].PersonalBestSplitTime[Model.TimingMethod.GameTime].GetValueOrDefault(),
+					PersonalBestSplitRealTime = state.Run[i].PersonalBestSplitTime[Model.TimingMethod.RealTime].GetValueOrDefault(),
+					BestSegmentGameTime = state.Run[i].PersonalBestSplitTime[Model.TimingMethod.GameTime].GetValueOrDefault(),
+					BestSegmentRealTime = state.Run[i].BestSegmentTime[Model.TimingMethod.RealTime].GetValueOrDefault(),
+				};
+			}
+		}
+
+		public StreamerBot_Events_SplitData(LiveSplitState state, StreamerBot_Events_SplitData compareAgainst) : base(state)
+		{
+			if (compareAgainst == null)
+				return;
+
+
+			if (compareAgainst.GameName != state.Run.GameName)
+				GameName = state.Run.GameName;
+
+			if (compareAgainst.Category != state.Run.CategoryName)
+				Category = state.Run.CategoryName;
+
+			if (compareAgainst.AutosplitterPresent != (state.Run.AutoSplitter?.IsActivated ?? false) || compareAgainst.AutosplitterPresent != state.IsGameTimeInitialized)
+				AutosplitterPresent = (state.Run.AutoSplitter?.IsActivated ?? false) || state.IsGameTimeInitialized;
+
+			if (compareAgainst.AttemptCount != state.Run.AttemptCount)
+				AttemptCount = state.Run.AttemptCount;
+
+			bool splitsNeedAttaching = false;
+			if (compareAgainst.SplitCount != state.Run.Count)
+			{
+				SplitCount = state.Run.Count;
+				splitsNeedAttaching = true;
+			}
+
+			if (Offset != state.Run.Offset)
+				Offset = state.Run.Offset;
+
+			SplitData[] tempSplitsSplits = new SplitData[state.Run.Count];
+
+			for (int i = 0; i < tempSplitsSplits.Length; i++)
+			{
+				tempSplitsSplits[i] = new SplitData()
+				{
+					Name = state.Run[i].Name,
+					PersonalBestSplitGameTime = state.Run[i].PersonalBestSplitTime[Model.TimingMethod.GameTime].GetValueOrDefault(),
+					PersonalBestSplitRealTime = state.Run[i].PersonalBestSplitTime[Model.TimingMethod.RealTime].GetValueOrDefault(),
+					BestSegmentGameTime = state.Run[i].PersonalBestSplitTime[Model.TimingMethod.GameTime].GetValueOrDefault(),
+					BestSegmentRealTime = state.Run[i].BestSegmentTime[Model.TimingMethod.RealTime].GetValueOrDefault(),
+				};
+
+				if (SplitData.SplitsChanged(tempSplitsSplits[i], compareAgainst.Splits[i]))
+				{
+					splitsNeedAttaching = true;
+				}
+			}
+
+			if (splitsNeedAttaching)
+				this.Splits = tempSplitsSplits;			
 		}
 
 		public override EventTypeE EventType => EventTypeE.OnSplitsUpdated;
@@ -15,9 +108,10 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 		public string GameName;
 		public string Category;
 		public bool? AutosplitterPresent;
-		public int? SplitCount;
 		public int? AttemptCount;
-		//Run start offset maybe?
-
+		public TimeSpan? Offset;
+		public SplitData[] Splits;
+		public int? SplitCount;
+		public TimingMethod? TimingMethod;
 	}
 }

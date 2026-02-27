@@ -2,6 +2,7 @@
 using LiveSplit.Streamerbot.StreamerBot_Events;
 using System;
 using System.Linq;
+using System.Threading;
 
 namespace LiveSplit.StreamerBot
 {
@@ -9,6 +10,9 @@ namespace LiveSplit.StreamerBot
 	{
 		private StreamerBot_Connection streamerBotConnection;
 		private StreamerBot_Events_SplitData runProperties;
+		private bool m_ShouldRunPolling = false;
+		private bool m_IsInGameTimePaused = false;
+		private Thread m_IsGameTimePolling = null;
 
 		public void RegisterEvents(LiveSplitState state, StreamerBot_Connection streamerBotConnection)
 		{
@@ -23,8 +27,9 @@ namespace LiveSplit.StreamerBot
 			state.OnSkipSplit += State_OnSkipSplit;
 			state.RunManuallyModified += State_RunManuallyModified;
 			this.streamerBotConnection.OnConnectionChanged += ConnectionChanged;
-			//TODO: We'll need some hacky way of handling game time so we can report it.
 
+
+			//TODO: We'll need some hacky way of handling game time so we can report it.
 			System.Timers.Timer st = new System.Timers.Timer(500)
 			{
 				AutoReset = false,
@@ -60,7 +65,7 @@ namespace LiveSplit.StreamerBot
 			if (streamerBotConnection != null)
 				streamerBotConnection.OnConnectionChanged -= ConnectionChanged;
 
-			if(state.Run.AutoSplitter != null)
+			if (state.Run.AutoSplitter != null)
 			{
 			}
 		}
@@ -70,37 +75,7 @@ namespace LiveSplit.StreamerBot
 			if (state.Run == null)
 				return;
 
-			StreamerBot_Events_SplitData changesOnly = new StreamerBot_Events_SplitData(state);
-
-			if (runProperties.GameName != state.Run.GameName)
-			{
-				runProperties.GameName = state.Run.GameName;
-				changesOnly.GameName = state.Run.GameName;
-			}
-
-			if (runProperties.Category != state.Run.CategoryName)
-			{
-				runProperties.Category = state.Run.CategoryName;
-				changesOnly.Category = state.Run.CategoryName;
-			}
-
-			if (runProperties.SplitCount != state.Run.Count)
-			{
-				runProperties.SplitCount = state.Run.Count;
-				changesOnly.SplitCount = state.Run.Count;
-			}
-
-			if(runProperties.AutosplitterPresent != (state.Run.AutoSplitter?.IsActivated ?? false) || runProperties.AutosplitterPresent != state.IsGameTimeInitialized)
-			{
-				runProperties.AutosplitterPresent = (state.Run.AutoSplitter?.IsActivated ?? false) || state.IsGameTimeInitialized;
-				changesOnly.AutosplitterPresent = runProperties.AutosplitterPresent;
-			}
-
-			if (runProperties.AttemptCount != state.Run.AttemptCount)
-			{
-				runProperties.AttemptCount = state.Run.AttemptCount;
-				changesOnly.AttemptCount = state.Run.AttemptCount;
-			}
+			StreamerBot_Events_SplitData changesOnly = new StreamerBot_Events_SplitData(state, runProperties);
 
 			streamerBotConnection.SendMessage(changesOnly);
 		}
@@ -108,7 +83,16 @@ namespace LiveSplit.StreamerBot
 
 		private void State_OnPause(object sender, EventArgs e) => streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnPause((LiveSplitState)sender));
 
-		private void State_OnReset(object sender, TimerPhase value) => streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnReset((LiveSplitState)sender));
+		private void State_OnReset(object sender, TimerPhase value)
+		{
+			m_ShouldRunPolling = false;
+			if (m_IsInGameTimePaused != false)
+			{
+				m_IsInGameTimePaused = false;
+				streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnGameTimePaused((LiveSplitState)sender));
+			}
+			streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnReset((LiveSplitState)sender));
+		}
 
 		private void State_OnResume(object sender, EventArgs e) => streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnResume((LiveSplitState)sender));
 
@@ -148,9 +132,40 @@ namespace LiveSplit.StreamerBot
 		{
 			var state = (LiveSplitState)sender;
 			streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnStart(state));
-			if(state.Run.AutoSplitter != null)
+			if (state.Run.AutoSplitter != null || state.IsGameTimeInitialized)
 			{
+				m_ShouldRunPolling = true;
+				m_IsGameTimePolling = new Thread(() =>
+				{
+					PollInGameTime(state);
+				});
 			}
+
+			m_IsGameTimePolling.Start();
+		}
+
+		private void PollInGameTime(LiveSplitState state)
+		{
+			while (m_ShouldRunPolling)
+			{
+				var isPausedNow = state.IsGameTimePaused;
+				if (isPausedNow != m_IsInGameTimePaused)
+				{
+					m_IsInGameTimePaused = isPausedNow;
+					if (isPausedNow)
+					{
+						streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnGameTimePaused(state));
+					}
+					else
+					{
+						streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnGameTimeResumed(state));
+					}
+				}
+				Thread.Sleep(25);
+			}
+#if DEBUG
+			System.Diagnostics.Debug.WriteLine("Ending Game Time Polling Thread");
+#endif
 		}
 
 		private void State_OnUndoSplit(object sender, EventArgs e) => streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnUndoSplit((LiveSplitState)sender));
