@@ -70,6 +70,9 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			if (compareAgainst.AttemptCount != state.Run.AttemptCount)
 				AttemptCount = state.Run.AttemptCount;
 
+			if (Offset != state.Run.Offset)
+				Offset = state.Run.Offset;
+
 			bool splitsNeedAttaching = false;
 			if (compareAgainst.SplitCount != state.Run.Count)
 			{
@@ -77,8 +80,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 				splitsNeedAttaching = true;
 			}
 
-			if (Offset != state.Run.Offset)
-				Offset = state.Run.Offset;
+
 
 			SplitData[] tempSplitsSplits = new SplitData[state.Run.Count];
 
@@ -93,14 +95,12 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 					BestSegmentRealTime = state.Run[i].BestSegmentTime[Model.TimingMethod.RealTime].GetValueOrDefault(),
 				};
 
-				if (SplitData.SplitsChanged(tempSplitsSplits[i], compareAgainst.Splits[i]))
-				{
+				if (!splitsNeedAttaching && SplitData.SplitsChanged(tempSplitsSplits[i], compareAgainst.Splits[i]))
 					splitsNeedAttaching = true;
-				}
 			}
 
 			if (splitsNeedAttaching)
-				this.Splits = tempSplitsSplits;			
+				this.Splits = tempSplitsSplits;
 		}
 
 		public override EventTypeE EventType => EventTypeE.OnSplitsUpdated;

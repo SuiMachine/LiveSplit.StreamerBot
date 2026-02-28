@@ -12,28 +12,28 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			internal OnStart(LiveSplitState state) : base(state) { }
 		}
 
-		public class OnUndoSplit : StreamerBot_Event_OnSplit
+		public class OnUndoSplit : OnSplit
 		{
 			public override EventTypeE EventType => EventTypeE.OnUndoSplit;
 
 			internal OnUndoSplit(LiveSplitState state) : base(state) { }
 		}
 
-		public class OnSkipSplit : StreamerBot_Event_OnSplit
+		public class OnSkipSplit : OnSplit
 		{
 			public override EventTypeE EventType => EventTypeE.OnSkipSplit;
 
 			internal OnSkipSplit(LiveSplitState state) : base(state) { }
 		}
 
-		public class OnGreenSplit : StreamerBot_Event_OnSplit
+		public class OnGreenSplit : OnSplit
 		{
 			public override EventTypeE EventType => EventTypeE.OnGreenSplit;
 
 			internal OnGreenSplit(LiveSplitState state) : base(state) { }
 		}
 
-		public class OnRedSplit : StreamerBot_Event_OnSplit
+		public class OnRedSplit : OnSplit
 		{
 			public override EventTypeE EventType => EventTypeE.OnRedSplit;
 
@@ -84,8 +84,19 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			internal OnGameTimeResumed(LiveSplitState state) : base(state) { }
 		}
 
+		public class OnRunFinishedWithPB : OnRunFinishedWithoutPB
+		{
+			public override EventTypeE EventType => EventTypeE.OnRunFinishedWithPB;
+			internal OnRunFinishedWithPB(LiveSplitState state) : base(state) { }
+		}
 
-		public class StreamerBot_Event_OnSplit : StreamerBot_Event
+		public class OnRunFinishedWithoutPB : OnSplit
+		{
+			public override EventTypeE EventType => EventTypeE.OnRunFinishedWithoutPB;
+			internal OnRunFinishedWithoutPB(LiveSplitState state) : base(state) { }
+		}
+
+		public class OnSplit : StreamerBot_Event
 		{
 			public override EventTypeE EventType => EventTypeE.Invalid;
 			public TimeSpan LastSplitTime;
@@ -97,9 +108,9 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			public int CurrentSplitIndex;
 			public bool WasLastSplitGold;
 
-			internal StreamerBot_Event_OnSplit(LiveSplitState state) : base(state)
+			internal OnSplit(LiveSplitState state) : base(state)
 			{
-				this.CurrentSplitName = state.CurrentSplit.Name;
+				this.CurrentSplitName = state.CurrentSplit?.Name ?? "";
 				this.CurrentSplitIndex = state.CurrentSplitIndex;
 
 				if (state.CurrentSplitIndex > 0)

@@ -211,7 +211,7 @@
 			this.groupBox1.Size = new System.Drawing.Size(458, 183);
 			this.groupBox1.TabIndex = 5;
 			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Test actions";
+			this.groupBox1.Text = "Test actions (not implemented yet!)";
 			// 
 			// tableLayoutPanel6
 			// 

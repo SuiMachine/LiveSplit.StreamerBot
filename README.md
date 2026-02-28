@@ -1,7 +1,7 @@
 ﻿LiveSplit.StreamerBot
 =====================
 
-LiveSplit.StreamerBot is a [LiveSplit](http://livesplit.org/) component that is a fork of LiveSplit.VTS that provides simplified Websocket request connecting to StreamerBot, that can then be handled in various ways on StreamerBot's side.
+LiveSplit.StreamerBot is a [LiveSplit](http://livesplit.org/) component that is a fork of LiveSplit.VTS that provides simplified Websocket requests to StreamerBot, that can then be handled in various ways on StreamerBot's side.
 
 Requirements
 ------------
@@ -16,7 +16,8 @@ Install
 2. Move the files to LiveSplit's Component folder.
 3. Launch LiveSplit and Edit the layout.
 4. Add Other -> StreamerBot Connection.
-Add rest of instructions
+5. See [wiki](https://github.com/SuiMachine/LiveSplit.StreamerBot/wiki) on how to set up StreamerBot and for import string.
+6. Configure target adress and port and click connect. 
 
 Credits
 -------

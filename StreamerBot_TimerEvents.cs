@@ -116,14 +116,17 @@ namespace LiveSplit.StreamerBot
 			}
 			else if (state.CurrentPhase == TimerPhase.Ended)
 			{
-				var currentEndRunTime = state.CurrentTime[state.CurrentTimingMethod];
-				var pbRunTime = state.Run.Last().Comparisons[state.CurrentComparison][state.CurrentTimingMethod];
+				var currentTime = state.Run[state.CurrentSplitIndex - 1].SplitTime[state.CurrentTimingMethod];
+				var pbTime = state.Run[state.CurrentSplitIndex - 1].Comparisons[state.CurrentComparison][state.CurrentTimingMethod];
 
-				if (currentEndRunTime > pbRunTime)
+				if (currentTime > pbTime)
 				{
+					streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnRunFinishedWithoutPB(state));
+
 				}
 				else
 				{
+					streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnRunFinishedWithPB(state));
 				}
 			}
 		}
@@ -139,9 +142,9 @@ namespace LiveSplit.StreamerBot
 				{
 					PollInGameTime(state);
 				});
-			}
 
-			m_IsGameTimePolling.Start();
+				m_IsGameTimePolling.Start();
+			}
 		}
 
 		private void PollInGameTime(LiveSplitState state)

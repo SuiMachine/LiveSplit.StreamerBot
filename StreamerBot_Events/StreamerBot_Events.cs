@@ -21,6 +21,8 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			OnGameTimePaused,
 			OnGameTimeResumed,
 			OnSplitsUpdated,
+			OnRunFinishedWithPB,
+			OnRunFinishedWithoutPB
 		}
 
 		protected StreamerBot_Event(LiveSplitState state)

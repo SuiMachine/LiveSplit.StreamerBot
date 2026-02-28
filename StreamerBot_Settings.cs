@@ -173,6 +173,8 @@ namespace LiveSplit.StreamerBot
 		{
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
+
+
 		}
 
 		private void B_Test_OnReset_Click(object sender, EventArgs e)

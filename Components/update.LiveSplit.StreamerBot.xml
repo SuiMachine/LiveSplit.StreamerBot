@@ -1,5 +1,5 @@
 <updates>
-    <update version="0.1.1">
+    <update version="0.1.0">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
             <file path="Components/Newtonsoft.Json.dll" status="changed" />
