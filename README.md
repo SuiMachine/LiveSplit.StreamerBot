@@ -12,7 +12,7 @@ Requirements
 
 Install
 -------
-1. Download a newest [release build](https://github.com/SuiMachine/LiveSplit.StreamerBot/releases) and extract it.
+1. Download the latest [release build](https://github.com/SuiMachine/LiveSplit.StreamerBot/releases) and extract it.
 2. Move the files to LiveSplit's Component folder.
 3. Launch LiveSplit and Edit the layout.
 4. Add Other -> StreamerBot Connection.

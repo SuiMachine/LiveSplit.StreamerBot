@@ -9,14 +9,14 @@ namespace LiveSplit.StreamerBot
 	public class StreamerBot_TimerEvents
 	{
 		private StreamerBot_Connection streamerBotConnection;
-		private StreamerBot_Events_SplitData runProperties;
+		private Event_SplitData runProperties;
 		private bool m_ShouldRunPolling = false;
 		private bool m_IsInGameTimePaused = false;
 		private Thread m_IsGameTimePolling = null;
 
 		public void RegisterEvents(LiveSplitState state, StreamerBot_Connection streamerBotConnection)
 		{
-			this.runProperties = new StreamerBot_Events_SplitData(state);
+			this.runProperties = new Event_SplitData(state);
 			this.streamerBotConnection = streamerBotConnection;
 			state.OnPause += State_OnPause;
 			state.OnReset += State_OnReset;
@@ -75,7 +75,7 @@ namespace LiveSplit.StreamerBot
 			if (state.Run == null)
 				return;
 
-			StreamerBot_Events_SplitData changesOnly = new StreamerBot_Events_SplitData(state, runProperties);
+			Event_SplitData changesOnly = new Event_SplitData(state, runProperties);
 
 			streamerBotConnection.SendMessage(changesOnly);
 		}

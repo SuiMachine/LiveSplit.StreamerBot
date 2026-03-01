@@ -16,14 +16,20 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 		{
 			public override EventTypeE EventType => EventTypeE.OnUndoSplit;
 
-			internal OnUndoSplit(LiveSplitState state) : base(state) { }
+			internal OnUndoSplit(LiveSplitState state) : base(state)
+			{
+				this.WasLastSplitGold = false;
+			}
 		}
 
 		public class OnSkipSplit : OnSplit
 		{
 			public override EventTypeE EventType => EventTypeE.OnSkipSplit;
 
-			internal OnSkipSplit(LiveSplitState state) : base(state) { }
+			internal OnSkipSplit(LiveSplitState state) : base(state)
+			{
+				this.WasLastSplitGold = false;
+			}
 		}
 
 		public class OnGreenSplit : OnSplit

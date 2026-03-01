@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace LiveSplit.Streamerbot.StreamerBot_Events
 {
-	internal class StreamerBot_Events_SplitData : StreamerBot_Event
+	internal class Event_SplitData : StreamerBot_Event
 	{
 		[DebuggerDisplay("Split - {Name} | PB Split Game Time: {PersonalBestSplitGameTime} | PB Split Real Time: {PersonalBestSplitRealTime} | Best Segment Game Time: {BestSegmentGameTime} | Best Segment Real Time: {BestSegmentRealTime}")]
 		public class SplitData
@@ -18,18 +18,18 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			public static bool SplitsChanged(SplitData a, SplitData b)
 			{
 				if (ReferenceEquals(a, b))
-					return true;
-				if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
 					return false;
-				return a.Name == b.Name
-					&& a.PersonalBestSplitGameTime == b.PersonalBestSplitGameTime
-					&& a.PersonalBestSplitRealTime == b.PersonalBestSplitRealTime
-					&& a.BestSegmentGameTime == b.BestSegmentGameTime
-					&& a.BestSegmentRealTime == b.BestSegmentRealTime;
+				if (ReferenceEquals(a, null) || ReferenceEquals(b, null))
+					return true;
+				return a.Name != b.Name
+					|| a.PersonalBestSplitGameTime != b.PersonalBestSplitGameTime
+					|| a.PersonalBestSplitRealTime != b.PersonalBestSplitRealTime
+					|| a.BestSegmentGameTime != b.BestSegmentGameTime
+					|| a.BestSegmentRealTime != b.BestSegmentRealTime;
 			}
 		}
 
-		public StreamerBot_Events_SplitData(LiveSplitState state) : base(state)
+		public Event_SplitData(LiveSplitState state) : base(state)
 		{
 			GameName = state.Run.GameName;
 			Category = state.Run.CategoryName;
@@ -52,7 +52,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			}
 		}
 
-		public StreamerBot_Events_SplitData(LiveSplitState state, StreamerBot_Events_SplitData compareAgainst) : base(state)
+		public Event_SplitData(LiveSplitState state, Event_SplitData compareAgainst) : base(state)
 		{
 			if (compareAgainst == null)
 				return;
@@ -64,13 +64,13 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			if (compareAgainst.Category != state.Run.CategoryName)
 				Category = state.Run.CategoryName;
 
-			if (compareAgainst.AutosplitterPresent != (state.Run.AutoSplitter?.IsActivated ?? false) || compareAgainst.AutosplitterPresent != state.IsGameTimeInitialized)
+			if (compareAgainst.AutosplitterPresent != ((state.Run.AutoSplitter?.IsActivated ?? false) || compareAgainst.AutosplitterPresent != state.IsGameTimeInitialized))
 				AutosplitterPresent = (state.Run.AutoSplitter?.IsActivated ?? false) || state.IsGameTimeInitialized;
 
 			if (compareAgainst.AttemptCount != state.Run.AttemptCount)
 				AttemptCount = state.Run.AttemptCount;
 
-			if (Offset != state.Run.Offset)
+			if (compareAgainst.Offset != state.Run.Offset)
 				Offset = state.Run.Offset;
 
 			bool splitsNeedAttaching = false;
