@@ -75,7 +75,7 @@ namespace LiveSplit.StreamerBot
 			if (state.Run == null)
 				return;
 
-			Event_SplitData changesOnly = new Event_SplitData(state, runProperties);
+			Event_SplitData changesOnly = new Event_SplitData(state);
 
 			streamerBotConnection.SendMessage(changesOnly);
 		}

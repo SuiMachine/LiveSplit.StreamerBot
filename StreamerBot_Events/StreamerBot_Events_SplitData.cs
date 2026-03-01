@@ -52,7 +52,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			}
 		}
 
-		public Event_SplitData(LiveSplitState state, Event_SplitData compareAgainst) : base(state)
+/*		public Event_SplitData(LiveSplitState state, Event_SplitData compareAgainst) : base(state)
 		{
 			if (compareAgainst == null)
 				return;
@@ -101,7 +101,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 
 			if (splitsNeedAttaching)
 				this.Splits = tempSplitsSplits;
-		}
+		}*/
 
 		public override EventTypeE EventType => EventTypeE.OnSplitsUpdated;
 

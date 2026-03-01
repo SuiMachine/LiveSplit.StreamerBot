@@ -52,7 +52,8 @@
       <Private>False</Private>
     </Reference>
     <Reference Include="websocket-sharp">
-      <HintPath>Libs\websocket-sharp.dll</HintPath>
+      <HintPath>C:\LiveSplit\websocket-sharp.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
