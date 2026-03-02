@@ -29,7 +29,12 @@ namespace LiveSplit.StreamerBot
 		public override void Dispose()
 		{
 			this.Disposed = true;
-			StreamerBot_Connection.GetInstance().UnregisterEvents(_state);
+			var instance = StreamerBot_Connection.GetInstance();
+			instance.UnregisterEvents(_state);
+			instance.Dispose();
+			this.Settings = null;
+			this._state = null;
+			this._timer = null;
 		}
 
 		public override XmlNode GetSettings(XmlDocument document)

@@ -64,10 +64,6 @@ namespace LiveSplit.StreamerBot
 
 			if (streamerBotConnection != null)
 				streamerBotConnection.OnConnectionChanged -= ConnectionChanged;
-
-			if (state.Run.AutoSplitter != null)
-			{
-			}
 		}
 
 		private void UpdateRunProperties(LiveSplitState state)

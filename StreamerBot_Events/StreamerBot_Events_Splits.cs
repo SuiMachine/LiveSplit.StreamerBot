@@ -113,6 +113,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			public string CurrentSplitName;
 			public int CurrentSplitIndex;
 			public bool WasLastSplitGold;
+			public bool LostTimeOnSplit;
 
 			internal OnSplit(LiveSplitState state) : base(state)
 			{
@@ -126,14 +127,16 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 					TimeSpan personalBestSegmentTime = lastSplit.BestSegmentTime[state.CurrentTimingMethod].GetValueOrDefault();
 					TimeSpan lastSegmentTime = lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault() - (state.CurrentSplitIndex - 2 >= 0 ? state.Run[state.CurrentSplitIndex - 2].SplitTime[state.CurrentTimingMethod].GetValueOrDefault() : TimeSpan.Zero);
 
-					this.WasLastSplitGold = lastSegmentTime < personalBestSegmentTime;
 
 					this.PreviousSplitName = lastSplit.Name;
-					this.SplitTimeDifference = lastSplit.Comparisons[state.CurrentComparison][state.CurrentTimingMethod].GetValueOrDefault() - lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault();
+					this.SplitTimeDifference = lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault() - lastSplit.Comparisons[state.CurrentComparison][state.CurrentTimingMethod].GetValueOrDefault();
 
 					this.LastSplitTime = lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault();
 					this.LastSplitGameTime = lastSplit.SplitTime[TimingMethod.GameTime].GetValueOrDefault();
 					this.LastSplitRealTime = lastSplit.SplitTime[TimingMethod.RealTime].GetValueOrDefault();
+
+					this.WasLastSplitGold = lastSegmentTime < personalBestSegmentTime;
+					this.LostTimeOnSplit = SplitTimeDifference > TimeSpan.Zero;
 				}
 			}
 		}

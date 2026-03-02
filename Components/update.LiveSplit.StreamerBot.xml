@@ -1,9 +1,18 @@
 <updates>
+    <update version="0.2.0">
+        <files>
+            <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
+        </files>
+        <changelog>
+            <change>Implement LostTimeOnSplit for Split.</change>
+            <change>Inverted SplitTimeDifference, so that negative is time saved and positive timespan is time lost, because that's how it is displayed in LiveSplit.</change>
+            <change>Fixed disposing the component when removing it from the list of layout elements.</change>
+        </changelog>
+    </update>
     <update version="0.1.0">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
             <file path="Components/Newtonsoft.Json.dll" status="changed" />
-            <file path="Components/websocket-sharp.dll" status="changed" />
         </files>
         <changelog>
             <change>Initial release</change>

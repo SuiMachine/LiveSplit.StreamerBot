@@ -1,16 +1,14 @@
 ﻿using LiveSplit.Model;
 using LiveSplit.Streamerbot.StreamerBot_Events;
 using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
-using System.Linq;
 using WebSocketSharp;
 
 
 namespace LiveSplit.StreamerBot
 {
-	public class StreamerBot_Connection
+	public class StreamerBot_Connection : IDisposable
 	{
 		private static StreamerBot_Connection instance;
 		private StreamerBot_Settings m_settingsForm;
@@ -47,6 +45,13 @@ namespace LiveSplit.StreamerBot
 					Log(ex.ToString());
 				}
 			}
+		}
+
+		public void Dispose()
+		{
+			Disconnect();
+			instance = null;
+			webSocket = null;
 		}
 
 		public void Disconnect()
