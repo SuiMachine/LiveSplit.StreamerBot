@@ -112,6 +112,6 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 		public TimeSpan? Offset;
 		public SplitData[] Splits;
 		public int? SplitCount;
-		public TimingMethod? TimingMethod;
+		public TimingMethod? TimingMethod = null;
 	}
 }

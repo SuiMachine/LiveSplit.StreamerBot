@@ -1,10 +1,20 @@
 ﻿using LiveSplit.Model;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Converters;
 using System;
 
 namespace LiveSplit.Streamerbot.StreamerBot_Events
 {
 	public class StreamerBot_Events_Splits
 	{
+		[JsonConverter(typeof(StringEnumConverter))]
+		public enum SegmentResultE
+		{
+			BestSegment,
+			SavedTime,
+			LostTime,
+		}
+
 		public class OnStart : StreamerBot_Event
 		{
 			public override EventTypeE EventType => EventTypeE.OnStart;
@@ -18,7 +28,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 
 			internal OnUndoSplit(LiveSplitState state) : base(state)
 			{
-				this.WasLastSplitGold = false;
+				this.SegmentResult = null;
 			}
 		}
 
@@ -28,7 +38,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 
 			internal OnSkipSplit(LiveSplitState state) : base(state)
 			{
-				this.WasLastSplitGold = false;
+				this.SegmentResult = null;
 			}
 		}
 
@@ -47,7 +57,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 		}
 
 
-		public class OnResume : StreamerBot_Event
+		public class OnResume : OnPause
 		{
 			public override EventTypeE EventType => EventTypeE.OnResume;
 
@@ -64,16 +74,21 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 		public class OnPause : StreamerBot_Event
 		{
 			public override EventTypeE EventType => EventTypeE.OnPause;
-
-			internal OnPause(LiveSplitState state) : base(state) { }
-		}
-
-		public class OnGameTimePaused : StreamerBot_Event
-		{
-			public override EventTypeE EventType => EventTypeE.OnGameTimePaused;
 			public TimeSpan CurrentGameTime;
 			public TimeSpan CurrentRealTime;
 			public TimeSpan CurrentLoadTime;
+
+			internal OnPause(LiveSplitState state) : base(state)
+			{
+				this.CurrentGameTime = state.CurrentTime[TimingMethod.GameTime].GetValueOrDefault();
+				this.CurrentRealTime = state.CurrentTime[TimingMethod.RealTime].GetValueOrDefault();
+				this.CurrentLoadTime = state.LoadingTimes;
+			}
+		}
+
+		public class OnGameTimePaused : OnPause
+		{
+			public override EventTypeE EventType => EventTypeE.OnGameTimePaused;
 
 			internal OnGameTimePaused(LiveSplitState state) : base(state)
 			{
@@ -112,8 +127,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			public string PreviousSplitName;
 			public string CurrentSplitName;
 			public int CurrentSplitIndex;
-			public bool WasLastSplitGold;
-			public bool LostTimeOnSplit;
+			public SegmentResultE? SegmentResult;
 
 			internal OnSplit(LiveSplitState state) : base(state)
 			{
@@ -127,7 +141,6 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 					TimeSpan personalBestSegmentTime = lastSplit.BestSegmentTime[state.CurrentTimingMethod].GetValueOrDefault();
 					TimeSpan lastSegmentTime = lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault() - (state.CurrentSplitIndex - 2 >= 0 ? state.Run[state.CurrentSplitIndex - 2].SplitTime[state.CurrentTimingMethod].GetValueOrDefault() : TimeSpan.Zero);
 
-
 					this.PreviousSplitName = lastSplit.Name;
 					this.SplitTimeDifference = lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault() - lastSplit.Comparisons[state.CurrentComparison][state.CurrentTimingMethod].GetValueOrDefault();
 
@@ -135,8 +148,12 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 					this.LastSplitGameTime = lastSplit.SplitTime[TimingMethod.GameTime].GetValueOrDefault();
 					this.LastSplitRealTime = lastSplit.SplitTime[TimingMethod.RealTime].GetValueOrDefault();
 
-					this.WasLastSplitGold = lastSegmentTime < personalBestSegmentTime;
-					this.LostTimeOnSplit = SplitTimeDifference > TimeSpan.Zero;
+					if (lastSegmentTime < personalBestSegmentTime)
+						this.SegmentResult = SegmentResultE.BestSegment;
+					else if (lastSegmentTime < lastSplit.Comparisons[state.CurrentComparison][state.CurrentTimingMethod].GetValueOrDefault())
+						this.SegmentResult = SegmentResultE.SavedTime;
+					else
+						this.SegmentResult = SegmentResultE.LostTime;
 				}
 			}
 		}
