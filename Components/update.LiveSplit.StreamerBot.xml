@@ -6,7 +6,6 @@
         <changelog>
             <change>Replaced LostTimeOnSplit and WasLastSplitGold with SegmentResult enum.</change>
             <change>OnPause and OnResume not has the same fields as OnPauseGameTime, e.g. CurrentGameTime, CurrentRealTime and CurrentLoadTime.</change>
-            <change>Fixed disposing the component when removing it from the list of layout elements.</change>
         </changelog>
     </update>
     <update version="0.2.0">
