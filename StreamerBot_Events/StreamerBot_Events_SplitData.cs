@@ -31,8 +31,6 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 
 		public Event_SplitData(LiveSplitState state) : base(state)
 		{
-			GameName = state.Run.GameName;
-			Category = state.Run.CategoryName;
 			SplitCount = state.Run.Count;
 			AutosplitterPresent = (state.Run.AutoSplitter?.IsActivated ?? false) || state.IsGameTimeInitialized;
 			AttemptCount = state.Run.AttemptCount;
@@ -105,8 +103,6 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 
 		public override EventTypeE EventType => EventTypeE.OnSplitsUpdated;
 
-		public string GameName;
-		public string Category;
 		public bool? AutosplitterPresent;
 		public int? AttemptCount;
 		public TimeSpan? Offset;

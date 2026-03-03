@@ -27,7 +27,12 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 
 		protected StreamerBot_Event(LiveSplitState state)
 		{
+			GameName = state.Run.GameName;
+			Category = state.Run.CategoryName;
 		}
+
+		public string GameName;
+		public string Category;
 
 		public abstract EventTypeE EventType { get; }
 	}

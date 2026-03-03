@@ -1,11 +1,21 @@
 <updates>
+    <update version="0.4.0">
+        <files>
+            <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
+        </files>
+        <changelog>
+            <change>Game name and category are now included in all requests to make it a bit easier
+                to do conditional checks.</change>
+        </changelog>
+    </update>
     <update version="0.3.0">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
         </files>
         <changelog>
             <change>Replaced LostTimeOnSplit and WasLastSplitGold with SegmentResult enum.</change>
-            <change>OnPause and OnResume not has the same fields as OnPauseGameTime, e.g. CurrentGameTime, CurrentRealTime and CurrentLoadTime.</change>
+            <change>OnPause and OnResume not has the same fields as OnPauseGameTime, e.g.
+                CurrentGameTime, CurrentRealTime and CurrentLoadTime.</change>
         </changelog>
     </update>
     <update version="0.2.0">
@@ -14,7 +24,8 @@
         </files>
         <changelog>
             <change>Implemented LostTimeOnSplit for Split.</change>
-            <change>Inverted SplitTimeDifference, so that negative is time saved and positive timespan is time lost, because that's how it is displayed in LiveSplit.</change>
+            <change>Inverted SplitTimeDifference, so that negative is time saved and positive
+                timespan is time lost, because that's how it is displayed in LiveSplit.</change>
             <change>Fixed disposing the component when removing it from the list of layout elements.</change>
         </changelog>
     </update>
