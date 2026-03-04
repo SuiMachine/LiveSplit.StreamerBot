@@ -26,10 +26,14 @@ namespace LiveSplit.StreamerBot
 
 		private List<(PropertyInfo Property, LiveSplitStreamerBotSettingsAttribute Attribute)> mappings;
 		private List<(PropertyInfo Property, LiveSplitStreamerBotSettingsAttribute Attribute)> layout_settingsMappings;
+		private Model.LiveSplitState m_state;
+		private System.Random random;
 
-		public StreamerBot_Settings()
+		public StreamerBot_Settings(Model.LiveSplitState state)
 		{
 			InitializeComponent();
+			this.m_state = state;
+			random = new Random();
 
 			this.CB_Autoconnect.DataBindings.Add("Checked", this, nameof(Autoconnect), false, DataSourceUpdateMode.OnPropertyChanged);
 			this.TB_Address.DataBindings.Add("Text", this, nameof(Api_Address), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -167,6 +171,8 @@ namespace LiveSplit.StreamerBot
 		{
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
+
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnStart(m_state));
 		}
 
 		private void B_Test_OnPause_Click(object sender, EventArgs e)
@@ -174,57 +180,124 @@ namespace LiveSplit.StreamerBot
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
-
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnPause(m_state));
 		}
 
 		private void B_Test_OnReset_Click(object sender, EventArgs e)
 		{
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
+
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnReset(m_state));
 		}
 
 		private void B_Test_OnResume_Click(object sender, EventArgs e)
 		{
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
+
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnResume(m_state));
 		}
 
 		private void B_Test_OnUndoSplit_Click(object sender, EventArgs e)
 		{
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
+
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnUndoSplit(m_state));
 		}
 
 		private void B_Test_OnSkipSplit_Click(object sender, EventArgs e)
 		{
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
+
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnSkipSplit(m_state));
 		}
 
 		private void B_Test_OnRedSplit_Click(object sender, EventArgs e)
 		{
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
+
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnRedSplit(m_state)
+			{
+				SplitTimeDifference = new TimeSpan(0, 0, 10),
+				SegmentResult = Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.SegmentResultE.BestSegment
+			});
+		}
+
+		private void B_Test_OnRedSplitSavedTime_Click(object sender, EventArgs e)
+		{
+			if (!StreamerBot_Connection.GetInstance().IsConnected)
+				return;
+
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnRedSplit(m_state)
+			{
+				SplitTimeDifference = new TimeSpan(0, 0, 10),
+				SegmentResult = Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.SegmentResultE.SavedTime
+			});
+		}
+
+		private void B_Test_OnRedSplitLostTime_Click(object sender, EventArgs e)
+		{
+			if (!StreamerBot_Connection.GetInstance().IsConnected)
+				return;
+
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnRedSplit(m_state)
+			{
+				SplitTimeDifference = new TimeSpan(0, 0, 10),
+				SegmentResult = Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.SegmentResultE.LostTime
+			});
 		}
 
 		private void B_Test_OnGreenSplit_Click(object sender, EventArgs e)
 		{
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
+
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnGreenSplit(m_state)
+			{
+				SegmentResult = Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.SegmentResultE.BestSegment
+			});
+		}
+
+		private void B_Test_OnGreenSplitSaved_Click(object sender, EventArgs e)
+		{
+			if (!StreamerBot_Connection.GetInstance().IsConnected)
+				return;
+
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnGreenSplit(m_state)
+			{
+				SegmentResult = Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.SegmentResultE.SavedTime
+			});
 		}
 
 		private void B_Test_OnGoldSplit_Click(object sender, EventArgs e)
 		{
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
+
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnGreenSplit(m_state)
+			{
+				SplitTimeDifference = new TimeSpan(0, 0, -10),
+				SegmentResult = Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.SegmentResultE.BestSegment
+			});
 		}
 
-		private void B_Test_OnGold_Click(object sender, EventArgs e)
+		private void B_Test_OnGreenSplitLost_Click(object sender, EventArgs e)
 		{
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
+			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnGreenSplit(m_state)
+			{
+				SplitTimeDifference = new TimeSpan(0, 0, -10),
+				SegmentResult = Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.SegmentResultE.LostTime
+			});
 		}
+
+
 
 		private void ScrollLogToEnd()
 		{

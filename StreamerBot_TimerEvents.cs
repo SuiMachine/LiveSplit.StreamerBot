@@ -11,8 +11,9 @@ namespace LiveSplit.StreamerBot
 		private StreamerBot_Connection streamerBotConnection;
 		private Event_SplitData runProperties;
 		private bool m_ShouldRunPolling = false;
-		private bool m_IsInGameTimePaused = false;
-		private Thread m_IsGameTimePolling = null;
+		private bool m_CheckTimerThreadRunning = false;
+		private Thread m_CheckTimerThread = null;
+		private bool m_LastPaceWasBehindPB;
 
 		public void RegisterEvents(LiveSplitState state, StreamerBot_Connection streamerBotConnection)
 		{
@@ -82,9 +83,9 @@ namespace LiveSplit.StreamerBot
 		private void State_OnReset(object sender, TimerPhase value)
 		{
 			m_ShouldRunPolling = false;
-			if (m_IsInGameTimePaused != false)
+			if (m_CheckTimerThreadRunning != false)
 			{
-				m_IsInGameTimePaused = false;
+				m_CheckTimerThreadRunning = false;
 				streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnGameTimePaused((LiveSplitState)sender));
 			}
 			streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnReset((LiveSplitState)sender));
@@ -97,7 +98,7 @@ namespace LiveSplit.StreamerBot
 			LiveSplitState state = (LiveSplitState)sender;
 			if (state.CurrentSplit != null)
 			{
-				//Todo = secure this!
+				//Todo = secure this?
 				var currentTime = state.Run[state.CurrentSplitIndex - 1].SplitTime[state.CurrentTimingMethod];
 				var pbTime = state.Run[state.CurrentSplitIndex - 1].Comparisons[state.CurrentComparison][state.CurrentTimingMethod];
 
@@ -108,6 +109,7 @@ namespace LiveSplit.StreamerBot
 				else
 				{
 					streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnGreenSplit(state));
+					m_LastPaceWasBehindPB = false;
 				}
 			}
 			else if (state.CurrentPhase == TimerPhase.Ended)
@@ -131,35 +133,58 @@ namespace LiveSplit.StreamerBot
 		{
 			var state = (LiveSplitState)sender;
 			streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnStart(state));
-			if (state.Run.AutoSplitter != null || state.IsGameTimeInitialized)
-			{
-				m_ShouldRunPolling = true;
-				m_IsGameTimePolling = new Thread(() =>
-				{
-					PollInGameTime(state);
-				});
+			bool hasAutosplitter = state.Run.AutoSplitter != null || state.IsGameTimeInitialized;
 
-				m_IsGameTimePolling.Start();
-			}
+			m_ShouldRunPolling = true;
+			m_CheckTimerThread = new Thread(() =>
+			{
+				PollTimer(state, hasAutosplitter);
+			});
+
+			m_CheckTimerThread.Start();
 		}
 
-		private void PollInGameTime(LiveSplitState state)
+		private void PollTimer(LiveSplitState state, bool hasAutosplitter)
 		{
+			TimeSpan lastTime = state.CurrentTime[state.CurrentTimingMethod].GetValueOrDefault();
+
+			//Should probably implement cancellation token :-/
 			while (m_ShouldRunPolling)
 			{
-				var isPausedNow = state.IsGameTimePaused;
-				if (isPausedNow != m_IsInGameTimePaused)
+				if (hasAutosplitter)
 				{
-					m_IsInGameTimePaused = isPausedNow;
-					if (isPausedNow)
+					var isPausedNow = state.IsGameTimePaused;
+					if (isPausedNow != m_CheckTimerThreadRunning)
 					{
-						streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnGameTimePaused(state));
-					}
-					else
-					{
-						streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnGameTimeResumed(state));
+						m_CheckTimerThreadRunning = isPausedNow;
+						if (isPausedNow)
+						{
+							streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnGameTimePaused(state));
+						}
+						else
+						{
+							streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnGameTimeResumed(state));
+						}
 					}
 				}
+
+				TimeSpan newTime = state.CurrentTime[state.CurrentTimingMethod].GetValueOrDefault();
+
+				if (state.CurrentSplitIndex < state.Run.Count)
+				{
+					TimeSpan splitTime = state.CurrentSplit.Comparisons[state.CurrentComparison][state.CurrentTimingMethod].GetValueOrDefault();
+					if (newTime != lastTime && splitTime != default)
+					{
+						if (newTime > splitTime && splitTime >= lastTime)
+						{
+							streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnLostPBPace(state, m_LastPaceWasBehindPB));
+							m_LastPaceWasBehindPB = false;
+						}
+					}
+				}
+
+				lastTime = newTime;
+
 				Thread.Sleep(25);
 			}
 #if DEBUG

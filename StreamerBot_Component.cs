@@ -23,7 +23,7 @@ namespace LiveSplit.StreamerBot
 
 			_timer = new TimerModel { CurrentState = state };
 			StreamerBot_Connection.GetInstance().RegisterEvents(_state);
-			this.Settings = new StreamerBot_Settings();
+			this.Settings = new StreamerBot_Settings(state);
 		}
 
 		public override void Dispose()

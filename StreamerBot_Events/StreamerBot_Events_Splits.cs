@@ -117,6 +117,21 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			internal OnRunFinishedWithoutPB(LiveSplitState state) : base(state) { }
 		}
 
+		public class OnLostPBPace : StreamerBot_Event
+		{
+			public override EventTypeE EventType => EventTypeE.OnLostPBPace;
+			public int CurrentSplitIndex;
+			public string CurrentSplitName;
+			public bool WasLastSplitBehindPB;
+
+			public OnLostPBPace(LiveSplitState state, bool m_LastPaceWasBehindPB) : base(state)
+			{
+				this.CurrentSplitIndex = state.CurrentSplitIndex;
+				this.CurrentSplitName = state.CurrentSplit?.Name ?? "";
+				this.WasLastSplitBehindPB = m_LastPaceWasBehindPB;
+			}
+		}
+
 		public class OnSplit : StreamerBot_Event
 		{
 			public override EventTypeE EventType => EventTypeE.Invalid;

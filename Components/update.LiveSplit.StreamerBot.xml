@@ -1,4 +1,13 @@
 <updates>
+    <update version="0.5.0">
+        <files>
+            <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
+        </files>
+        <changelog>
+            <change>Implemented test buttons (although they could be better)</change>
+            <change>Implemented a new event - OnLostPBPace that runs when the time difference on a split changes from negative to positive (you end up behind the PB) - please update it on the side of StreamerBot as well!</change>
+        </changelog>
+    </update>
     <update version="0.4.0">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
