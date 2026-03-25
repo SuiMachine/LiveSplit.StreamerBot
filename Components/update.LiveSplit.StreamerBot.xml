@@ -1,4 +1,13 @@
 <updates>
+    <update version="0.6.0">
+        <files>
+            <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
+        </files>
+        <changelog>
+            <change>Fixed a case during restarting where checking game time could resolve in an unhandled exception due to CurrentSplit being null.</change>
+            <change>Added fields related to Meta Data obtained from Speedrun.com, that can be specified under "Other" when editing splits. This includes elements such as leaderboard URL, subcategories, variables and platform used. Refer to wiki for more information.</change>
+        </changelog>
+    </update>
     <update version="0.5.0">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />

@@ -172,6 +172,11 @@ namespace LiveSplit.StreamerBot
 
 				if (state.CurrentSplitIndex < state.Run.Count)
 				{
+					if (state.CurrentSplitIndex < 0 || state.CurrentSplit == null)
+					{
+						Thread.Sleep(25);
+						continue;
+					}
 					TimeSpan splitTime = state.CurrentSplit.Comparisons[state.CurrentComparison][state.CurrentTimingMethod].GetValueOrDefault();
 					if (newTime != lastTime && splitTime != default)
 					{
