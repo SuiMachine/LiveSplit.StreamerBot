@@ -29,6 +29,7 @@ namespace LiveSplit.StreamerBot
 			state.RunManuallyModified += State_RunManuallyModified;
 			this.streamerBotConnection.OnConnectionChanged += ConnectionChanged;
 
+			this.streamerBotConnection.Log("Registered Timer Events");
 
 			//TODO: We'll need some hacky way of handling game time so we can report it.
 			System.Timers.Timer st = new System.Timers.Timer(500)
@@ -44,6 +45,8 @@ namespace LiveSplit.StreamerBot
 
 		private void ConnectionChanged(bool state)
 		{
+			this.streamerBotConnection?.Log($"Connection changed {state}");
+
 			if (state)
 			{
 				streamerBotConnection.SendMessage(runProperties, true);
@@ -63,6 +66,7 @@ namespace LiveSplit.StreamerBot
 			state.OnSkipSplit -= State_OnSkipSplit;
 			state.RunManuallyModified -= State_RunManuallyModified;
 
+			this.streamerBotConnection?.Log("Unregistered Timer Events");
 			if (streamerBotConnection != null)
 				streamerBotConnection.OnConnectionChanged -= ConnectionChanged;
 		}

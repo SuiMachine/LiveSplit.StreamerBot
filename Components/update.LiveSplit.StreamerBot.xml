@@ -1,4 +1,12 @@
 <updates>
+    <update version="0.6.1">
+        <files>
+            <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
+        </files>
+        <changelog>
+            <change>Implemented additional log messages to help debug issues (requires Log debug messages to be checked)</change>
+        </changelog>
+    </update>
     <update version="0.6.0">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />

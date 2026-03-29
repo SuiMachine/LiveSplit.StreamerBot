@@ -2,6 +2,7 @@
 using LiveSplit.Streamerbot.StreamerBot_Events;
 using Newtonsoft.Json;
 using System;
+using System.Data;
 using System.Diagnostics;
 using WebSocketSharp;
 
@@ -31,6 +32,7 @@ namespace LiveSplit.StreamerBot
 
 		public void Connect()
 		{
+			Log("Connecting...");
 			if (!IsConnected)
 			{
 				try
@@ -42,7 +44,7 @@ namespace LiveSplit.StreamerBot
 				}
 				catch (Exception ex)
 				{
-					Log(ex.ToString());
+					LogError($"Connecting error: {ex}");
 				}
 			}
 		}
@@ -66,10 +68,45 @@ namespace LiveSplit.StreamerBot
 		{
 			OnConnectionChanged?.Invoke(false);
 
-			if (e.Reason != null)
-				Log($"Disconnected wih a reason: \'{e.Reason}\'");
+			var result = TranslateCode(e.Code);
+
+			if (!string.IsNullOrEmpty(e.Reason))
+				Log($"Disconnected wih a reason: \'{e.Reason}\' - code: {result}");
 			else
-				Log($"Disconnected with code {e.Code}");
+				Log($"Disconnected with code '{result}'");
+		}
+
+		private string TranslateCode(ushort code)
+		{
+			switch (code)
+			{
+				case 1000:
+					return "Normal Closure";
+				case 1001:
+					return "Going Away";
+				case 1002:
+					return "Protocol Error";
+				case 1003:
+					return "Unsupported Data";
+				case 1005:
+					return "No Status Received";
+				case 1006:
+					return "Abnormal Closure";
+				case 1007:
+					return "Invalid frame payload data";
+				case 1008:
+					return "Policy Violation";
+				case 1009:
+					return "Message Too Big";
+				case 1010:
+					return "Mandatory Extension";
+				case 1011:
+					return "Internal Server Error";
+				case 1015:
+					return "TLS Handshake Failure";
+				default:
+					return $"Undefined {code}";
+			}
 		}
 
 		private void WebSocket_OnOpen(object sender, EventArgs e)
@@ -130,6 +167,7 @@ namespace LiveSplit.StreamerBot
 				var convert = JsonConvert.SerializeObject(message);
 #endif
 
+				Log($"Sending {message.EventType}");
 				webSocket.SendAsync(convert, new Action<bool>((success) =>
 				{
 					if (!success)

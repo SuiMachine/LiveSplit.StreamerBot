@@ -161,6 +161,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Connect_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("Connect clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				StreamerBot_Connection.GetInstance().Connect();
 			else
@@ -169,6 +172,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Test_OnStart_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnStart clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -177,6 +183,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Test_OnPause_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnPause clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -185,6 +194,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Test_OnReset_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnReset clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -193,6 +205,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Test_OnResume_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnResume clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -201,6 +216,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Test_OnUndoSplit_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnUndoSplit clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -209,6 +227,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Test_OnSkipSplit_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnSkipSplit clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -217,6 +238,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Test_OnRedSplit_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnRedSplitClicked(BestSplit) clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -229,6 +253,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Test_OnRedSplitSavedTime_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnRedSplitClicked(SavedTime) clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -241,6 +268,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Test_OnRedSplitLostTime_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnRedSplitClicked(LostTime) clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -253,6 +283,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Test_OnGreenSplit_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnGreenSplit(Gold) clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -264,6 +297,9 @@ namespace LiveSplit.StreamerBot
 
 		private void B_Test_OnGreenSplitSaved_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnGreenSplit(SavedTime) clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -273,20 +309,11 @@ namespace LiveSplit.StreamerBot
 			});
 		}
 
-		private void B_Test_OnGoldSplit_Click(object sender, EventArgs e)
-		{
-			if (!StreamerBot_Connection.GetInstance().IsConnected)
-				return;
-
-			StreamerBot_Connection.GetInstance().SendMessage(new Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.OnGreenSplit(m_state)
-			{
-				SplitTimeDifference = new TimeSpan(0, 0, -10),
-				SegmentResult = Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.SegmentResultE.BestSegment
-			});
-		}
-
 		private void B_Test_OnGreenSplitLost_Click(object sender, EventArgs e)
 		{
+			if (DebugLog)
+				AppendMessage("OnGreenSplit(LostTime) clicked!");
+
 			if (!StreamerBot_Connection.GetInstance().IsConnected)
 				return;
 
@@ -296,8 +323,6 @@ namespace LiveSplit.StreamerBot
 				SegmentResult = Streamerbot.StreamerBot_Events.StreamerBot_Events_Splits.SegmentResultE.LostTime
 			});
 		}
-
-
 
 		private void ScrollLogToEnd()
 		{
