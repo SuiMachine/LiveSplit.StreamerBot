@@ -115,9 +115,9 @@ namespace LiveSplit.StreamerBot
 			OnConnectionChanged?.Invoke(true);
 		}
 
-		public void Log(string message)
+		public void Log(string message, bool alwaysLog = false)
 		{
-			if (m_settingsForm != null && m_settingsForm.DebugLog)
+			if (m_settingsForm != null && (m_settingsForm.DebugLog || alwaysLog))
 			{
 				string t = "[StreamerBot]: " + message;
 				m_settingsForm.AppendMessage(t);
@@ -125,9 +125,9 @@ namespace LiveSplit.StreamerBot
 			}
 		}
 
-		public void LogWarning(string message)
+		public void LogWarning(string message, bool alwaysLog = false)
 		{
-			if (m_settingsForm != null && m_settingsForm.DebugLog)
+			if (m_settingsForm != null && (m_settingsForm.DebugLog || alwaysLog))
 			{
 				string t = "[StreamerBot] Warning: " + message;
 				m_settingsForm.AppendMessage(t);
@@ -135,9 +135,9 @@ namespace LiveSplit.StreamerBot
 			}
 		}
 
-		public void LogError(string error)
+		public void LogError(string error, bool alwaysLog = false)
 		{
-			if (m_settingsForm != null && m_settingsForm.DebugLog)
+			if (m_settingsForm != null && (m_settingsForm.DebugLog || alwaysLog))
 			{
 				string t = "[StreamerBot VTS] Error: " + error;
 				m_settingsForm.AppendMessage(t);
