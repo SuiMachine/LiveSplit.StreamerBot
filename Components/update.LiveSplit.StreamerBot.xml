@@ -1,4 +1,12 @@
 <updates>
+    <update version="0.6.2">
+        <files>
+            <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
+        </files>
+        <changelog>
+            <change>Implemented a workaround for LiveSplit hanging for 30-60s, when the new installation of LiveSplit is used and LiveSplit hasn't yet downloaded the list of games from Speedrun.com.</change>
+        </changelog>
+    </update>
     <update version="0.6.1">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
