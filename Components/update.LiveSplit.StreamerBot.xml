@@ -1,4 +1,12 @@
 <updates>
+    <update version="0.6.3">
+        <files>
+            <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
+        </files>
+        <changelog>
+            <change>Autoconnect now attempts to reconnect to a websocket ever 10s (and then every 60s after 10 failures).</change>
+        </changelog>
+    </update>
     <update version="0.6.2">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />

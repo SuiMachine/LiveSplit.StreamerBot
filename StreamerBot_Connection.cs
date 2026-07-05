@@ -17,6 +17,8 @@ namespace LiveSplit.StreamerBot
 
 		public Action<bool> OnConnectionChanged;
 		private WebSocket webSocket;
+		private System.Timers.Timer m_ReconnectTimer;
+		private int m_FailureCounter = 0;
 		public bool IsConnected => webSocket != null && webSocket.IsAlive;
 
 		public static StreamerBot_Connection GetInstance()
@@ -37,6 +39,12 @@ namespace LiveSplit.StreamerBot
 			{
 				try
 				{
+					if (m_ReconnectTimer != null)
+					{
+						m_ReconnectTimer.Stop();
+						m_ReconnectTimer.Dispose();
+						m_ReconnectTimer = null;
+					}
 					webSocket = new WebSocket(m_settingsForm.Api_Address);
 					webSocket.OnOpen += WebSocket_OnOpen;
 					webSocket.OnClose += WebSocket_OnClose;
@@ -74,6 +82,22 @@ namespace LiveSplit.StreamerBot
 				Log($"Disconnected wih a reason: \'{e.Reason}\' - code: {result}");
 			else
 				Log($"Disconnected with code '{result}'");
+
+			if (m_ReconnectTimer == null && m_settingsForm.Autoconnect)
+			{
+				int delay = 10_000;
+				if (m_FailureCounter >= 10)
+					delay = 60_000;
+
+				m_ReconnectTimer = new System.Timers.Timer(delay);
+				m_ReconnectTimer.Elapsed += (s, ev) =>
+				{
+					Log($"Attempting to reconnect ({m_FailureCounter})...");
+					Connect();
+				};
+				m_FailureCounter++;
+				m_ReconnectTimer.Start();
+			}
 		}
 
 		private string TranslateCode(ushort code)
@@ -113,6 +137,7 @@ namespace LiveSplit.StreamerBot
 		{
 			Log("Connected!");
 			OnConnectionChanged?.Invoke(true);
+			m_FailureCounter = 0;
 		}
 
 		public void Log(string message, bool alwaysLog = false)

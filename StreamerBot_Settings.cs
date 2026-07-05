@@ -27,13 +27,11 @@ namespace LiveSplit.StreamerBot
 		private List<(PropertyInfo Property, LiveSplitStreamerBotSettingsAttribute Attribute)> mappings;
 		private List<(PropertyInfo Property, LiveSplitStreamerBotSettingsAttribute Attribute)> layout_settingsMappings;
 		private Model.LiveSplitState m_state;
-		private System.Random random;
 
 		public StreamerBot_Settings(Model.LiveSplitState state)
 		{
 			InitializeComponent();
 			this.m_state = state;
-			random = new Random();
 
 			this.CB_Autoconnect.DataBindings.Add("Checked", this, nameof(Autoconnect), false, DataSourceUpdateMode.OnPropertyChanged);
 			this.TB_Address.DataBindings.Add("Text", this, nameof(Api_Address), false, DataSourceUpdateMode.OnPropertyChanged);
@@ -65,7 +63,6 @@ namespace LiveSplit.StreamerBot
 				{
 					ConnectionStatusChanged(active);
 				}));
-				return;
 			}
 			else
 			{
