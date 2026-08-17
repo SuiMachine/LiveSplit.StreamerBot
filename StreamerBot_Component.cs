@@ -22,7 +22,7 @@ namespace LiveSplit.StreamerBot
 			_state = state;
 
 			_timer = new TimerModel { CurrentState = state };
-			StreamerBot_Connection.GetInstance().RegisterEvents(_state);
+			StreamerBot_Connection.GetInstance().RegisterEvents(_state, _timer);
 			this.Settings = new StreamerBot_Settings(state);
 		}
 

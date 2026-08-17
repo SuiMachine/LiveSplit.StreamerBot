@@ -27,6 +27,7 @@ namespace LiveSplit.StreamerBot
 		private List<(PropertyInfo Property, LiveSplitStreamerBotSettingsAttribute Attribute)> mappings;
 		private List<(PropertyInfo Property, LiveSplitStreamerBotSettingsAttribute Attribute)> layout_settingsMappings;
 		private Model.LiveSplitState m_state;
+		public Model.LiveSplitState LivesplitState => m_state;
 
 		public StreamerBot_Settings(Model.LiveSplitState state)
 		{

@@ -14,6 +14,7 @@ namespace LiveSplit.StreamerBot
 		private static StreamerBot_Connection instance;
 		private StreamerBot_Settings m_settingsForm;
 		private StreamerBot_TimerEvents m_timerEvents = new StreamerBot_TimerEvents();
+		private TimerModel m_Timer;
 
 		public Action<bool> OnConnectionChanged;
 		private WebSocket webSocket;
@@ -48,6 +49,7 @@ namespace LiveSplit.StreamerBot
 					webSocket = new WebSocket(m_settingsForm.Api_Address);
 					webSocket.OnOpen += WebSocket_OnOpen;
 					webSocket.OnClose += WebSocket_OnClose;
+					webSocket.OnMessage += WebSocket_OnMessage;
 					webSocket.ConnectAsync();
 				}
 				catch (Exception ex)
@@ -69,6 +71,35 @@ namespace LiveSplit.StreamerBot
 			if (IsConnected)
 			{
 				webSocket.CloseAsync();
+			}
+		}
+
+		private void WebSocket_OnMessage(object sender, MessageEventArgs e)
+		{
+			var lc = e.Data.Trim().ToLower();
+			switch(lc)
+			{
+				case "starttimer":
+					m_Timer.Start();
+					return;
+				case "pausertimer":
+					m_Timer.Pause();
+					return;
+				case "unpausetimer":
+					m_Timer.UndoAllPauses();
+					return;
+				case "resettimer":
+					m_Timer.Reset();
+					return;
+				case "skipsplit":
+					m_Timer.SkipSplit();
+					return;
+				case "undosplit":
+					m_Timer.UndoSplit();
+					return;
+				case "split":
+					m_Timer.Split();
+					return;
 			}
 		}
 
@@ -172,7 +203,11 @@ namespace LiveSplit.StreamerBot
 
 		public void SetFormReference(StreamerBot_Settings form) => m_settingsForm = form;
 
-		public void RegisterEvents(LiveSplitState state) => m_timerEvents.RegisterEvents(state, this);
+		public void RegisterEvents(LiveSplitState state, TimerModel timer)
+		{
+			m_Timer = timer;
+			m_timerEvents.RegisterEvents(state, this);
+		}
 
 		public void UnregisterEvents(LiveSplitState state) => m_timerEvents.UnregisterEvents(state);
 
