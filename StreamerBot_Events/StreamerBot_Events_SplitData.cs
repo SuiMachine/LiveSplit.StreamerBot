@@ -36,6 +36,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			AttemptCount = state.Run.AttemptCount;
 			Offset = state.Run.Offset;
 			Splits = new SplitData[state.Run.Count];
+			TimingMethod = state.CurrentTimingMethod;
 
 			for (int i = 0; i < Splits.Length; i++)
 			{

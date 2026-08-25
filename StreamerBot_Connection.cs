@@ -15,6 +15,7 @@ namespace LiveSplit.StreamerBot
 		private StreamerBot_Settings m_settingsForm;
 		private StreamerBot_TimerEvents m_timerEvents = new StreamerBot_TimerEvents();
 		private TimerModel m_Timer;
+		private LiveSplitState m_state;
 
 		public Action<bool> OnConnectionChanged;
 		private WebSocket webSocket;
@@ -77,7 +78,7 @@ namespace LiveSplit.StreamerBot
 		private void WebSocket_OnMessage(object sender, MessageEventArgs e)
 		{
 			var lc = e.Data.Trim().ToLower();
-			switch(lc)
+			switch (lc)
 			{
 				case "starttimer":
 					m_Timer.Start();
@@ -99,6 +100,9 @@ namespace LiveSplit.StreamerBot
 					return;
 				case "split":
 					m_Timer.Split();
+					return;
+				case "requestdata":
+					m_timerEvents.RequestRunData(m_state);
 					return;
 			}
 		}
@@ -205,6 +209,7 @@ namespace LiveSplit.StreamerBot
 
 		public void RegisterEvents(LiveSplitState state, TimerModel timer)
 		{
+			m_state = state;
 			m_Timer = timer;
 			m_timerEvents.RegisterEvents(state, this);
 		}

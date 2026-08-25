@@ -3,6 +3,7 @@ using LiveSplit.Streamerbot.StreamerBot_Events;
 using System;
 using System.Linq;
 using System.Threading;
+using static System.Windows.Forms.AxHost;
 
 namespace LiveSplit.StreamerBot
 {
@@ -204,5 +205,15 @@ namespace LiveSplit.StreamerBot
 		private void State_OnUndoSplit(object sender, EventArgs e) => streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnUndoSplit((LiveSplitState)sender));
 
 		private void State_OnSkipSplit(object sender, EventArgs e) => streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnSkipSplit((LiveSplitState)sender));
+
+		public void RequestRunData(LiveSplitState state)
+		{
+			if (state.Run == null)
+				return;
+
+			StreamerBot_Events_CurrentRun changesOnly = new StreamerBot_Events_CurrentRun(state);
+
+			streamerBotConnection.SendMessage(changesOnly);
+		}
 	}
 }

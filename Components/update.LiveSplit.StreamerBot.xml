@@ -1,4 +1,13 @@
 <updates>
+    <update version="0.7.0">
+        <files>
+            <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
+        </files>
+        <changelog>
+            <change>LiveSplit can now respond to events now (see wiki - this may change in the future).</change>
+            <change>Added missing TimingMethod to SplitData.</change>
+        </changelog>
+    </update>
     <update version="0.6.3">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
