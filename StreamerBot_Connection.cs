@@ -83,7 +83,7 @@ namespace LiveSplit.StreamerBot
 				case "starttimer":
 					m_Timer.Start();
 					return;
-				case "pausertimer":
+				case "pausetimer":
 					m_Timer.Pause();
 					return;
 				case "unpausetimer":
