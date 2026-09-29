@@ -139,6 +139,9 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			public TimeSpan LastSplitGameTime;
 			public TimeSpan LastSplitRealTime;
 			public TimeSpan SplitTimeDifference;
+			public TimeSpan BestSegmentTime;
+			public TimeSpan BestSegmentSplitDelta;
+
 			public string PreviousSplitName;
 			public string CurrentSplitName;
 			public int CurrentSplitIndex;
@@ -162,6 +165,8 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 					this.LastSplitTime = lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault();
 					this.LastSplitGameTime = lastSplit.SplitTime[TimingMethod.GameTime].GetValueOrDefault();
 					this.LastSplitRealTime = lastSplit.SplitTime[TimingMethod.RealTime].GetValueOrDefault();
+					this.BestSegmentTime = personalBestSegmentTime;
+					this.BestSegmentSplitDelta = lastSegmentTime - personalBestSegmentTime;
 
 					if (lastSegmentTime < personalBestSegmentTime)
 						this.SegmentResult = SegmentResultE.BestSegment;
