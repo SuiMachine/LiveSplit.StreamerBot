@@ -1,4 +1,14 @@
 <updates>
+    <update version="0.7.1">
+        <files>
+            <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
+        </files>
+        <changelog>
+            <change>Added BestSegmentTime in OnSplit event.</change>
+            <change>Added BestSegmentSplitDelta (a difference between your last split length and best time on that split) in OnSplit event.</change>
+            <change>To handle conversion to seconds may need to reimport _MainEvent in StreamerBot.</change>
+        </changelog>
+    </update>
     <update version="0.7.0">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
