@@ -32,7 +32,6 @@ namespace LiveSplit.StreamerBot
 
 			this.streamerBotConnection.Log("Registered Timer Events");
 
-			//TODO: We'll need some hacky way of handling game time so we can report it.
 			System.Timers.Timer st = new System.Timers.Timer(500)
 			{
 				AutoReset = false,
