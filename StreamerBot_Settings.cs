@@ -21,6 +21,10 @@ namespace LiveSplit.StreamerBot
 		public string Api_Address { get; set; }
 
 		[LiveSplitStreamerBotStoreLayoutSetting]
+		[LiveSplitStreamerBotSettingsAttributeBool("LimitOnPBLostMessages", true)]
+		public bool LimitOnPBLostMessages { get; set; }
+
+		[LiveSplitStreamerBotStoreLayoutSetting]
 		[LiveSplitStreamerBotSettingsAttributeBool("DebugLog", false)]
 		public bool DebugLog { get; set; }
 
@@ -37,6 +41,7 @@ namespace LiveSplit.StreamerBot
 			this.CB_Autoconnect.DataBindings.Add("Checked", this, nameof(Autoconnect), false, DataSourceUpdateMode.OnPropertyChanged);
 			this.TB_Address.DataBindings.Add("Text", this, nameof(Api_Address), false, DataSourceUpdateMode.OnPropertyChanged);
 			this.CB_Log_DebugMessages.DataBindings.Add("Checked", this, nameof(DebugLog), false, DataSourceUpdateMode.OnPropertyChanged);
+			this.CB_Limit_OnPBLost.DataBindings.Add("Checked", this, nameof(LimitOnPBLostMessages), false, DataSourceUpdateMode.OnPropertyChanged);
 
 			// defaults
 			ApplyDefaults();

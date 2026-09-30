@@ -14,7 +14,7 @@ namespace LiveSplit.StreamerBot
 		private bool m_ShouldRunPolling = false;
 		private bool m_CheckTimerThreadRunning = false;
 		private Thread m_CheckTimerThread = null;
-		private bool m_LastPaceWasBehindPB;
+		private bool m_LastPaceWasBehindPB; //Problem - technically this is bad and it would be better to re-read previous splits in case of undo
 
 		public void RegisterEvents(LiveSplitState state, StreamerBot_Connection streamerBotConnection)
 		{
@@ -102,7 +102,7 @@ namespace LiveSplit.StreamerBot
 			LiveSplitState state = (LiveSplitState)sender;
 			if (state.CurrentSplit != null)
 			{
-				//Todo = secure this?
+				//Do we need to secure this?
 				var currentTime = state.Run[state.CurrentSplitIndex - 1].SplitTime[state.CurrentTimingMethod];
 				var pbTime = state.Run[state.CurrentSplitIndex - 1].Comparisons[state.CurrentComparison][state.CurrentTimingMethod];
 
@@ -113,6 +113,8 @@ namespace LiveSplit.StreamerBot
 				else
 				{
 					streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnGreenSplit(state));
+					if (m_LastPaceWasBehindPB)
+						streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnRegainPBPace(state));
 					m_LastPaceWasBehindPB = false;
 				}
 			}
@@ -140,6 +142,7 @@ namespace LiveSplit.StreamerBot
 			bool hasAutosplitter = state.Run.AutoSplitter != null || state.IsGameTimeInitialized;
 
 			m_ShouldRunPolling = true;
+			m_LastPaceWasBehindPB = false;
 			m_CheckTimerThread = new Thread(() =>
 			{
 				PollTimer(state, hasAutosplitter);
@@ -186,8 +189,9 @@ namespace LiveSplit.StreamerBot
 					{
 						if (newTime > splitTime && splitTime >= lastTime)
 						{
-							streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnLostPBPace(state, m_LastPaceWasBehindPB));
-							m_LastPaceWasBehindPB = false;
+							if (!StreamerBot_Connection.GetInstance().LimitLostPBMessages || !m_LastPaceWasBehindPB)
+								streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnLostPBPace(state, m_LastPaceWasBehindPB));
+							m_LastPaceWasBehindPB = true;
 						}
 					}
 				}

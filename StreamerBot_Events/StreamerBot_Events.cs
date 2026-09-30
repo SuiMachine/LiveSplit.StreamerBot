@@ -25,7 +25,8 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 			OnSplitsRunUpdate,
 			OnRunFinishedWithPB,
 			OnRunFinishedWithoutPB,
-			OnLostPBPace
+			OnLostPBPace,
+			OnRegainPBPace
 		}
 
 		protected StreamerBot_Event(LiveSplitState state)

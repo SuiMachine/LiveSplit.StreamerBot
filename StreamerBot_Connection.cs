@@ -23,6 +23,8 @@ namespace LiveSplit.StreamerBot
 		private int m_FailureCounter = 0;
 		public bool IsConnected => webSocket != null && webSocket.IsAlive;
 
+		public bool LimitLostPBMessages => m_settingsForm.LimitOnPBLostMessages;
+
 		public static StreamerBot_Connection GetInstance()
 		{
 			if (instance == null)
