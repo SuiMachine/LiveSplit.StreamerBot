@@ -227,7 +227,7 @@ namespace LiveSplit.StreamerBot
 
 		private bool WasLastPaceBehindPB(LiveSplitState state, bool lookUpPrevious)
 		{
-			int offset = lookUpPrevious ? 2 : 1; //If you undo a split, we want to check a split earlier than usually
+			int offset = lookUpPrevious ? 2 : 1; //If the split changes, technically you want to check not just last, but the one before that - but you don't want to do that if you check current
 			if (state.CurrentSplit == null || state.CurrentSplitIndex < offset)
 				return false;
 
