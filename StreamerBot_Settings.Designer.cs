@@ -39,31 +39,34 @@
 			this.L_ConnectionStatus = new System.Windows.Forms.Label();
 			this.CB_Log_DebugMessages = new System.Windows.Forms.CheckBox();
 			this.B_Connect = new System.Windows.Forms.Button();
-			this.groupBox1 = new System.Windows.Forms.GroupBox();
-			this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
-			this.B_Test_OnStart = new System.Windows.Forms.Button();
-			this.B_Test_OnSkipSplit = new System.Windows.Forms.Button();
-			this.B_Test_OnGreenBestSplit = new System.Windows.Forms.Button();
-			this.B_Test_OnPause = new System.Windows.Forms.Button();
-			this.B_Test_OnRedSplitGold = new System.Windows.Forms.Button();
-			this.B_Test_OnReset = new System.Windows.Forms.Button();
-			this.B_Test_OnResume = new System.Windows.Forms.Button();
-			this.B_Test_OnUndoSplit = new System.Windows.Forms.Button();
 			this.tlpMain = new System.Windows.Forms.TableLayoutPanel();
 			this.gbLog = new System.Windows.Forms.GroupBox();
 			this.RB_LogText = new System.Windows.Forms.RichTextBox();
-			this.B_Test_OnRedSplitLostTime = new System.Windows.Forms.Button();
-			this.B_Test_OnRedSplitSavedTime = new System.Windows.Forms.Button();
-			this.B_Test_OnGreenSplitSaved = new System.Windows.Forms.Button();
+			this.tableLayoutPanel6 = new System.Windows.Forms.TableLayoutPanel();
 			this.B_Test_OnGreenSplitLost = new System.Windows.Forms.Button();
+			this.B_Test_OnRedSplitLostTime = new System.Windows.Forms.Button();
+			this.B_Test_OnGreenSplitSaved = new System.Windows.Forms.Button();
+			this.B_Test_OnRedSplitSavedTime = new System.Windows.Forms.Button();
+			this.B_Test_OnGreenBestSplit = new System.Windows.Forms.Button();
+			this.B_Test_OnRedSplitGold = new System.Windows.Forms.Button();
+			this.B_Test_OnUndoSplit = new System.Windows.Forms.Button();
+			this.B_Test_OnResume = new System.Windows.Forms.Button();
+			this.B_Test_OnReset = new System.Windows.Forms.Button();
+			this.B_Test_OnPause = new System.Windows.Forms.Button();
+			this.B_Test_OnSkipSplit = new System.Windows.Forms.Button();
+			this.B_Test_OnStart = new System.Windows.Forms.Button();
+			this.groupBox1 = new System.Windows.Forms.GroupBox();
+			this.tableLayoutPanel4 = new System.Windows.Forms.TableLayoutPanel();
+			this.CB_Limit_OnPBLost = new System.Windows.Forms.CheckBox();
 			this.gbStartSplits.SuspendLayout();
 			this.tableLayoutPanel1.SuspendLayout();
 			this.tableLayoutPanel2.SuspendLayout();
 			this.tableLayoutPanel3.SuspendLayout();
-			this.groupBox1.SuspendLayout();
-			this.tableLayoutPanel6.SuspendLayout();
 			this.tlpMain.SuspendLayout();
 			this.gbLog.SuspendLayout();
+			this.tableLayoutPanel6.SuspendLayout();
+			this.groupBox1.SuspendLayout();
+			this.tableLayoutPanel4.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// gbStartSplits
@@ -72,7 +75,7 @@
 			this.gbStartSplits.Dock = System.Windows.Forms.DockStyle.Top;
 			this.gbStartSplits.Location = new System.Drawing.Point(3, 3);
 			this.gbStartSplits.Name = "gbStartSplits";
-			this.gbStartSplits.Size = new System.Drawing.Size(470, 311);
+			this.gbStartSplits.Size = new System.Drawing.Size(470, 339);
 			this.gbStartSplits.TabIndex = 5;
 			this.gbStartSplits.TabStop = false;
 			this.gbStartSplits.Text = "Config";
@@ -83,16 +86,17 @@
 			this.tableLayoutPanel1.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel2, 0, 0);
 			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel3, 0, 1);
-			this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 2);
+			this.tableLayoutPanel1.Controls.Add(this.groupBox1, 0, 3);
+			this.tableLayoutPanel1.Controls.Add(this.tableLayoutPanel4, 0, 2);
 			this.tableLayoutPanel1.Dock = System.Windows.Forms.DockStyle.Top;
 			this.tableLayoutPanel1.Location = new System.Drawing.Point(3, 16);
 			this.tableLayoutPanel1.Name = "tableLayoutPanel1";
-			this.tableLayoutPanel1.RowCount = 3;
+			this.tableLayoutPanel1.RowCount = 4;
 			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 39F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 17F));
-			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tableLayoutPanel1.Size = new System.Drawing.Size(464, 291);
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 40F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 36F));
+			this.tableLayoutPanel1.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 52F));
+			this.tableLayoutPanel1.Size = new System.Drawing.Size(464, 315);
 			this.tableLayoutPanel1.TabIndex = 0;
 			// 
 			// tableLayoutPanel2
@@ -157,6 +161,7 @@
 			this.tableLayoutPanel3.Name = "tableLayoutPanel3";
 			this.tableLayoutPanel3.RowCount = 1;
 			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+			this.tableLayoutPanel3.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
 			this.tableLayoutPanel3.Size = new System.Drawing.Size(458, 32);
 			this.tableLayoutPanel3.TabIndex = 2;
 			// 
@@ -202,16 +207,39 @@
 			this.B_Connect.UseVisualStyleBackColor = true;
 			this.B_Connect.Click += new System.EventHandler(this.B_Connect_Click);
 			// 
-			// groupBox1
+			// tlpMain
 			// 
-			this.groupBox1.Controls.Add(this.tableLayoutPanel6);
-			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.groupBox1.Location = new System.Drawing.Point(3, 78);
-			this.groupBox1.Name = "groupBox1";
-			this.groupBox1.Size = new System.Drawing.Size(458, 210);
-			this.groupBox1.TabIndex = 5;
-			this.groupBox1.TabStop = false;
-			this.groupBox1.Text = "Test actions";
+			this.tlpMain.ColumnCount = 1;
+			this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
+			this.tlpMain.Controls.Add(this.gbLog, 0, 1);
+			this.tlpMain.Controls.Add(this.gbStartSplits, 0, 0);
+			this.tlpMain.Location = new System.Drawing.Point(0, 0);
+			this.tlpMain.Name = "tlpMain";
+			this.tlpMain.RowCount = 2;
+			this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
+			this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
+			this.tlpMain.Size = new System.Drawing.Size(476, 539);
+			this.tlpMain.TabIndex = 0;
+			// 
+			// gbLog
+			// 
+			this.gbLog.Controls.Add(this.RB_LogText);
+			this.gbLog.Dock = System.Windows.Forms.DockStyle.Top;
+			this.gbLog.Location = new System.Drawing.Point(3, 348);
+			this.gbLog.Name = "gbLog";
+			this.gbLog.Size = new System.Drawing.Size(470, 188);
+			this.gbLog.TabIndex = 6;
+			this.gbLog.TabStop = false;
+			this.gbLog.Text = "Log";
+			// 
+			// RB_LogText
+			// 
+			this.RB_LogText.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.RB_LogText.Location = new System.Drawing.Point(3, 16);
+			this.RB_LogText.Name = "RB_LogText";
+			this.RB_LogText.Size = new System.Drawing.Size(464, 169);
+			this.RB_LogText.TabIndex = 0;
+			this.RB_LogText.Text = "";
 			// 
 			// tableLayoutPanel6
 			// 
@@ -240,156 +268,32 @@
 			this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 33F));
 			this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 55F));
 			this.tableLayoutPanel6.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 8F));
-			this.tableLayoutPanel6.Size = new System.Drawing.Size(452, 191);
+			this.tableLayoutPanel6.Size = new System.Drawing.Size(452, 178);
 			this.tableLayoutPanel6.TabIndex = 13;
 			// 
-			// B_Test_OnStart
+			// B_Test_OnGreenSplitLost
 			// 
-			this.B_Test_OnStart.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.B_Test_OnStart.Location = new System.Drawing.Point(31, 5);
-			this.B_Test_OnStart.Name = "B_Test_OnStart";
-			this.B_Test_OnStart.Size = new System.Drawing.Size(88, 24);
-			this.B_Test_OnStart.TabIndex = 0;
-			this.B_Test_OnStart.Text = "OnStart";
-			this.B_Test_OnStart.UseVisualStyleBackColor = true;
-			this.B_Test_OnStart.Click += new System.EventHandler(this.B_Test_OnStart_Click);
-			// 
-			// B_Test_OnSkipSplit
-			// 
-			this.B_Test_OnSkipSplit.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.B_Test_OnSkipSplit.Location = new System.Drawing.Point(332, 38);
-			this.B_Test_OnSkipSplit.Name = "B_Test_OnSkipSplit";
-			this.B_Test_OnSkipSplit.Size = new System.Drawing.Size(88, 24);
-			this.B_Test_OnSkipSplit.TabIndex = 6;
-			this.B_Test_OnSkipSplit.Text = "OnSkipSplit";
-			this.B_Test_OnSkipSplit.UseVisualStyleBackColor = true;
-			this.B_Test_OnSkipSplit.Click += new System.EventHandler(this.B_Test_OnSkipSplit_Click);
-			// 
-			// B_Test_OnGreenBestSplit
-			// 
-			this.B_Test_OnGreenBestSplit.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.B_Test_OnGreenBestSplit.ForeColor = System.Drawing.Color.Green;
-			this.B_Test_OnGreenBestSplit.Location = new System.Drawing.Point(31, 74);
-			this.B_Test_OnGreenBestSplit.Name = "B_Test_OnGreenBestSplit";
-			this.B_Test_OnGreenBestSplit.Size = new System.Drawing.Size(88, 42);
-			this.B_Test_OnGreenBestSplit.TabIndex = 9;
-			this.B_Test_OnGreenBestSplit.Text = "OnGreenSplit (Gold split)";
-			this.B_Test_OnGreenBestSplit.UseVisualStyleBackColor = true;
-			this.B_Test_OnGreenBestSplit.Click += new System.EventHandler(this.B_Test_OnGreenSplit_Click);
-			// 
-			// B_Test_OnPause
-			// 
-			this.B_Test_OnPause.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.B_Test_OnPause.Location = new System.Drawing.Point(332, 5);
-			this.B_Test_OnPause.Name = "B_Test_OnPause";
-			this.B_Test_OnPause.Size = new System.Drawing.Size(88, 24);
-			this.B_Test_OnPause.TabIndex = 1;
-			this.B_Test_OnPause.Text = "OnPause";
-			this.B_Test_OnPause.UseVisualStyleBackColor = true;
-			this.B_Test_OnPause.Click += new System.EventHandler(this.B_Test_OnPause_Click);
-			// 
-			// B_Test_OnRedSplitGold
-			// 
-			this.B_Test_OnRedSplitGold.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.B_Test_OnRedSplitGold.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-			this.B_Test_OnRedSplitGold.Location = new System.Drawing.Point(31, 136);
-			this.B_Test_OnRedSplitGold.Name = "B_Test_OnRedSplitGold";
-			this.B_Test_OnRedSplitGold.Size = new System.Drawing.Size(88, 42);
-			this.B_Test_OnRedSplitGold.TabIndex = 8;
-			this.B_Test_OnRedSplitGold.Text = "OnRedSplit (Gold split)";
-			this.B_Test_OnRedSplitGold.UseVisualStyleBackColor = true;
-			this.B_Test_OnRedSplitGold.Click += new System.EventHandler(this.B_Test_OnRedSplit_Click);
-			// 
-			// B_Test_OnReset
-			// 
-			this.B_Test_OnReset.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.B_Test_OnReset.Location = new System.Drawing.Point(181, 5);
-			this.B_Test_OnReset.Name = "B_Test_OnReset";
-			this.B_Test_OnReset.Size = new System.Drawing.Size(88, 24);
-			this.B_Test_OnReset.TabIndex = 2;
-			this.B_Test_OnReset.Text = "OnReset";
-			this.B_Test_OnReset.UseVisualStyleBackColor = true;
-			this.B_Test_OnReset.Click += new System.EventHandler(this.B_Test_OnReset_Click);
-			// 
-			// B_Test_OnResume
-			// 
-			this.B_Test_OnResume.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.B_Test_OnResume.Location = new System.Drawing.Point(31, 38);
-			this.B_Test_OnResume.Name = "B_Test_OnResume";
-			this.B_Test_OnResume.Size = new System.Drawing.Size(88, 24);
-			this.B_Test_OnResume.TabIndex = 3;
-			this.B_Test_OnResume.Text = "OnResume";
-			this.B_Test_OnResume.UseVisualStyleBackColor = true;
-			this.B_Test_OnResume.Click += new System.EventHandler(this.B_Test_OnResume_Click);
-			// 
-			// B_Test_OnUndoSplit
-			// 
-			this.B_Test_OnUndoSplit.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.B_Test_OnUndoSplit.Location = new System.Drawing.Point(181, 38);
-			this.B_Test_OnUndoSplit.Name = "B_Test_OnUndoSplit";
-			this.B_Test_OnUndoSplit.Size = new System.Drawing.Size(88, 24);
-			this.B_Test_OnUndoSplit.TabIndex = 5;
-			this.B_Test_OnUndoSplit.Text = "OnUndoSplit";
-			this.B_Test_OnUndoSplit.UseVisualStyleBackColor = true;
-			this.B_Test_OnUndoSplit.Click += new System.EventHandler(this.B_Test_OnUndoSplit_Click);
-			// 
-			// tlpMain
-			// 
-			this.tlpMain.ColumnCount = 1;
-			this.tlpMain.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 100F));
-			this.tlpMain.Controls.Add(this.gbLog, 0, 1);
-			this.tlpMain.Controls.Add(this.gbStartSplits, 0, 0);
-			this.tlpMain.Location = new System.Drawing.Point(0, 0);
-			this.tlpMain.Name = "tlpMain";
-			this.tlpMain.RowCount = 2;
-			this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle());
-			this.tlpMain.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 20F));
-			this.tlpMain.Size = new System.Drawing.Size(476, 539);
-			this.tlpMain.TabIndex = 0;
-			// 
-			// gbLog
-			// 
-			this.gbLog.Controls.Add(this.RB_LogText);
-			this.gbLog.Dock = System.Windows.Forms.DockStyle.Top;
-			this.gbLog.Location = new System.Drawing.Point(3, 320);
-			this.gbLog.Name = "gbLog";
-			this.gbLog.Size = new System.Drawing.Size(470, 216);
-			this.gbLog.TabIndex = 6;
-			this.gbLog.TabStop = false;
-			this.gbLog.Text = "Log";
-			// 
-			// RB_LogText
-			// 
-			this.RB_LogText.Dock = System.Windows.Forms.DockStyle.Fill;
-			this.RB_LogText.Location = new System.Drawing.Point(3, 16);
-			this.RB_LogText.Name = "RB_LogText";
-			this.RB_LogText.Size = new System.Drawing.Size(464, 197);
-			this.RB_LogText.TabIndex = 0;
-			this.RB_LogText.Text = "";
+			this.B_Test_OnGreenSplitLost.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.B_Test_OnGreenSplitLost.ForeColor = System.Drawing.Color.Green;
+			this.B_Test_OnGreenSplitLost.Location = new System.Drawing.Point(332, 74);
+			this.B_Test_OnGreenSplitLost.Name = "B_Test_OnGreenSplitLost";
+			this.B_Test_OnGreenSplitLost.Size = new System.Drawing.Size(88, 42);
+			this.B_Test_OnGreenSplitLost.TabIndex = 14;
+			this.B_Test_OnGreenSplitLost.Text = "OnGreenSplit (Lost time)";
+			this.B_Test_OnGreenSplitLost.UseVisualStyleBackColor = true;
+			this.B_Test_OnGreenSplitLost.Click += new System.EventHandler(this.B_Test_OnGreenSplitLost_Click);
 			// 
 			// B_Test_OnRedSplitLostTime
 			// 
 			this.B_Test_OnRedSplitLostTime.Anchor = System.Windows.Forms.AnchorStyles.None;
 			this.B_Test_OnRedSplitLostTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-			this.B_Test_OnRedSplitLostTime.Location = new System.Drawing.Point(332, 136);
+			this.B_Test_OnRedSplitLostTime.Location = new System.Drawing.Point(332, 129);
 			this.B_Test_OnRedSplitLostTime.Name = "B_Test_OnRedSplitLostTime";
 			this.B_Test_OnRedSplitLostTime.Size = new System.Drawing.Size(88, 42);
 			this.B_Test_OnRedSplitLostTime.TabIndex = 11;
 			this.B_Test_OnRedSplitLostTime.Text = "OnRedSplit (Lost time)";
 			this.B_Test_OnRedSplitLostTime.UseVisualStyleBackColor = true;
 			this.B_Test_OnRedSplitLostTime.Click += new System.EventHandler(this.B_Test_OnRedSplitLostTime_Click);
-			// 
-			// B_Test_OnRedSplitSavedTime
-			// 
-			this.B_Test_OnRedSplitSavedTime.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.B_Test_OnRedSplitSavedTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
-			this.B_Test_OnRedSplitSavedTime.Location = new System.Drawing.Point(181, 136);
-			this.B_Test_OnRedSplitSavedTime.Name = "B_Test_OnRedSplitSavedTime";
-			this.B_Test_OnRedSplitSavedTime.Size = new System.Drawing.Size(88, 42);
-			this.B_Test_OnRedSplitSavedTime.TabIndex = 12;
-			this.B_Test_OnRedSplitSavedTime.Text = "OnRedSplit (Saved time)";
-			this.B_Test_OnRedSplitSavedTime.UseVisualStyleBackColor = true;
-			this.B_Test_OnRedSplitSavedTime.Click += new System.EventHandler(this.B_Test_OnRedSplitSavedTime_Click);
 			// 
 			// B_Test_OnGreenSplitSaved
 			// 
@@ -403,17 +307,143 @@
 			this.B_Test_OnGreenSplitSaved.UseVisualStyleBackColor = true;
 			this.B_Test_OnGreenSplitSaved.Click += new System.EventHandler(this.B_Test_OnGreenSplitSaved_Click);
 			// 
-			// B_Test_OnGreenSplitLost
+			// B_Test_OnRedSplitSavedTime
 			// 
-			this.B_Test_OnGreenSplitLost.Anchor = System.Windows.Forms.AnchorStyles.None;
-			this.B_Test_OnGreenSplitLost.ForeColor = System.Drawing.Color.Green;
-			this.B_Test_OnGreenSplitLost.Location = new System.Drawing.Point(332, 74);
-			this.B_Test_OnGreenSplitLost.Name = "B_Test_OnGreenSplitLost";
-			this.B_Test_OnGreenSplitLost.Size = new System.Drawing.Size(88, 42);
-			this.B_Test_OnGreenSplitLost.TabIndex = 14;
-			this.B_Test_OnGreenSplitLost.Text = "OnGreenSplit (Lost time)";
-			this.B_Test_OnGreenSplitLost.UseVisualStyleBackColor = true;
-			this.B_Test_OnGreenSplitLost.Click += new System.EventHandler(this.B_Test_OnGreenSplitLost_Click);
+			this.B_Test_OnRedSplitSavedTime.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.B_Test_OnRedSplitSavedTime.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+			this.B_Test_OnRedSplitSavedTime.Location = new System.Drawing.Point(181, 129);
+			this.B_Test_OnRedSplitSavedTime.Name = "B_Test_OnRedSplitSavedTime";
+			this.B_Test_OnRedSplitSavedTime.Size = new System.Drawing.Size(88, 42);
+			this.B_Test_OnRedSplitSavedTime.TabIndex = 12;
+			this.B_Test_OnRedSplitSavedTime.Text = "OnRedSplit (Saved time)";
+			this.B_Test_OnRedSplitSavedTime.UseVisualStyleBackColor = true;
+			this.B_Test_OnRedSplitSavedTime.Click += new System.EventHandler(this.B_Test_OnRedSplitSavedTime_Click);
+			// 
+			// B_Test_OnGreenBestSplit
+			// 
+			this.B_Test_OnGreenBestSplit.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.B_Test_OnGreenBestSplit.ForeColor = System.Drawing.Color.Green;
+			this.B_Test_OnGreenBestSplit.Location = new System.Drawing.Point(31, 74);
+			this.B_Test_OnGreenBestSplit.Name = "B_Test_OnGreenBestSplit";
+			this.B_Test_OnGreenBestSplit.Size = new System.Drawing.Size(88, 42);
+			this.B_Test_OnGreenBestSplit.TabIndex = 9;
+			this.B_Test_OnGreenBestSplit.Text = "OnGreenSplit (Gold split)";
+			this.B_Test_OnGreenBestSplit.UseVisualStyleBackColor = true;
+			this.B_Test_OnGreenBestSplit.Click += new System.EventHandler(this.B_Test_OnGreenSplit_Click);
+			// 
+			// B_Test_OnRedSplitGold
+			// 
+			this.B_Test_OnRedSplitGold.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.B_Test_OnRedSplitGold.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+			this.B_Test_OnRedSplitGold.Location = new System.Drawing.Point(31, 129);
+			this.B_Test_OnRedSplitGold.Name = "B_Test_OnRedSplitGold";
+			this.B_Test_OnRedSplitGold.Size = new System.Drawing.Size(88, 42);
+			this.B_Test_OnRedSplitGold.TabIndex = 8;
+			this.B_Test_OnRedSplitGold.Text = "OnRedSplit (Gold split)";
+			this.B_Test_OnRedSplitGold.UseVisualStyleBackColor = true;
+			this.B_Test_OnRedSplitGold.Click += new System.EventHandler(this.B_Test_OnRedSplit_Click);
+			// 
+			// B_Test_OnUndoSplit
+			// 
+			this.B_Test_OnUndoSplit.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.B_Test_OnUndoSplit.Location = new System.Drawing.Point(181, 38);
+			this.B_Test_OnUndoSplit.Name = "B_Test_OnUndoSplit";
+			this.B_Test_OnUndoSplit.Size = new System.Drawing.Size(88, 24);
+			this.B_Test_OnUndoSplit.TabIndex = 5;
+			this.B_Test_OnUndoSplit.Text = "OnUndoSplit";
+			this.B_Test_OnUndoSplit.UseVisualStyleBackColor = true;
+			this.B_Test_OnUndoSplit.Click += new System.EventHandler(this.B_Test_OnUndoSplit_Click);
+			// 
+			// B_Test_OnResume
+			// 
+			this.B_Test_OnResume.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.B_Test_OnResume.Location = new System.Drawing.Point(31, 38);
+			this.B_Test_OnResume.Name = "B_Test_OnResume";
+			this.B_Test_OnResume.Size = new System.Drawing.Size(88, 24);
+			this.B_Test_OnResume.TabIndex = 3;
+			this.B_Test_OnResume.Text = "OnResume";
+			this.B_Test_OnResume.UseVisualStyleBackColor = true;
+			this.B_Test_OnResume.Click += new System.EventHandler(this.B_Test_OnResume_Click);
+			// 
+			// B_Test_OnReset
+			// 
+			this.B_Test_OnReset.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.B_Test_OnReset.Location = new System.Drawing.Point(181, 5);
+			this.B_Test_OnReset.Name = "B_Test_OnReset";
+			this.B_Test_OnReset.Size = new System.Drawing.Size(88, 24);
+			this.B_Test_OnReset.TabIndex = 2;
+			this.B_Test_OnReset.Text = "OnReset";
+			this.B_Test_OnReset.UseVisualStyleBackColor = true;
+			this.B_Test_OnReset.Click += new System.EventHandler(this.B_Test_OnReset_Click);
+			// 
+			// B_Test_OnPause
+			// 
+			this.B_Test_OnPause.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.B_Test_OnPause.Location = new System.Drawing.Point(332, 5);
+			this.B_Test_OnPause.Name = "B_Test_OnPause";
+			this.B_Test_OnPause.Size = new System.Drawing.Size(88, 24);
+			this.B_Test_OnPause.TabIndex = 1;
+			this.B_Test_OnPause.Text = "OnPause";
+			this.B_Test_OnPause.UseVisualStyleBackColor = true;
+			this.B_Test_OnPause.Click += new System.EventHandler(this.B_Test_OnPause_Click);
+			// 
+			// B_Test_OnSkipSplit
+			// 
+			this.B_Test_OnSkipSplit.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.B_Test_OnSkipSplit.Location = new System.Drawing.Point(332, 38);
+			this.B_Test_OnSkipSplit.Name = "B_Test_OnSkipSplit";
+			this.B_Test_OnSkipSplit.Size = new System.Drawing.Size(88, 24);
+			this.B_Test_OnSkipSplit.TabIndex = 6;
+			this.B_Test_OnSkipSplit.Text = "OnSkipSplit";
+			this.B_Test_OnSkipSplit.UseVisualStyleBackColor = true;
+			this.B_Test_OnSkipSplit.Click += new System.EventHandler(this.B_Test_OnSkipSplit_Click);
+			// 
+			// B_Test_OnStart
+			// 
+			this.B_Test_OnStart.Anchor = System.Windows.Forms.AnchorStyles.None;
+			this.B_Test_OnStart.Location = new System.Drawing.Point(31, 5);
+			this.B_Test_OnStart.Name = "B_Test_OnStart";
+			this.B_Test_OnStart.Size = new System.Drawing.Size(88, 24);
+			this.B_Test_OnStart.TabIndex = 0;
+			this.B_Test_OnStart.Text = "OnStart";
+			this.B_Test_OnStart.UseVisualStyleBackColor = true;
+			this.B_Test_OnStart.Click += new System.EventHandler(this.B_Test_OnStart_Click);
+			// 
+			// groupBox1
+			// 
+			this.groupBox1.Controls.Add(this.tableLayoutPanel6);
+			this.groupBox1.Dock = System.Windows.Forms.DockStyle.Fill;
+			this.groupBox1.Location = new System.Drawing.Point(3, 115);
+			this.groupBox1.Name = "groupBox1";
+			this.groupBox1.Size = new System.Drawing.Size(458, 197);
+			this.groupBox1.TabIndex = 5;
+			this.groupBox1.TabStop = false;
+			this.groupBox1.Text = "Test actions";
+			// 
+			// tableLayoutPanel4
+			// 
+			this.tableLayoutPanel4.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+			this.tableLayoutPanel4.ColumnCount = 2;
+			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel4.ColumnStyles.Add(new System.Windows.Forms.ColumnStyle(System.Windows.Forms.SizeType.Percent, 50F));
+			this.tableLayoutPanel4.Controls.Add(this.CB_Limit_OnPBLost, 0, 0);
+			this.tableLayoutPanel4.Location = new System.Drawing.Point(3, 79);
+			this.tableLayoutPanel4.Name = "tableLayoutPanel4";
+			this.tableLayoutPanel4.RowCount = 1;
+			this.tableLayoutPanel4.RowStyles.Add(new System.Windows.Forms.RowStyle(System.Windows.Forms.SizeType.Absolute, 32F));
+			this.tableLayoutPanel4.Size = new System.Drawing.Size(458, 28);
+			this.tableLayoutPanel4.TabIndex = 6;
+			// 
+			// CB_Limit_OnPBLost
+			// 
+			this.CB_Limit_OnPBLost.AutoSize = true;
+			this.CB_Limit_OnPBLost.Location = new System.Drawing.Point(3, 3);
+			this.CB_Limit_OnPBLost.Name = "CB_Limit_OnPBLost";
+			this.CB_Limit_OnPBLost.Size = new System.Drawing.Size(150, 17);
+			this.CB_Limit_OnPBLost.TabIndex = 0;
+			this.CB_Limit_OnPBLost.Text = "Limit On PB lost messages";
+			this.CB_Limit_OnPBLost.UseVisualStyleBackColor = true;
 			// 
 			// StreamerBot_Settings
 			// 
@@ -429,10 +459,12 @@
 			this.tableLayoutPanel2.PerformLayout();
 			this.tableLayoutPanel3.ResumeLayout(false);
 			this.tableLayoutPanel3.PerformLayout();
-			this.groupBox1.ResumeLayout(false);
-			this.tableLayoutPanel6.ResumeLayout(false);
 			this.tlpMain.ResumeLayout(false);
 			this.gbLog.ResumeLayout(false);
+			this.tableLayoutPanel6.ResumeLayout(false);
+			this.groupBox1.ResumeLayout(false);
+			this.tableLayoutPanel4.ResumeLayout(false);
+			this.tableLayoutPanel4.PerformLayout();
 			this.ResumeLayout(false);
 
         }
@@ -453,18 +485,20 @@
 		private System.Windows.Forms.GroupBox gbLog;
 		private System.Windows.Forms.RichTextBox RB_LogText;
 		private System.Windows.Forms.GroupBox groupBox1;
-		private System.Windows.Forms.Button B_Test_OnReset;
-		private System.Windows.Forms.Button B_Test_OnPause;
-		private System.Windows.Forms.Button B_Test_OnStart;
-		private System.Windows.Forms.Button B_Test_OnGreenBestSplit;
-		private System.Windows.Forms.Button B_Test_OnRedSplitGold;
-		private System.Windows.Forms.Button B_Test_OnSkipSplit;
-		private System.Windows.Forms.Button B_Test_OnUndoSplit;
-		private System.Windows.Forms.Button B_Test_OnResume;
 		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel6;
+		private System.Windows.Forms.Button B_Test_OnStart;
+		private System.Windows.Forms.Button B_Test_OnSkipSplit;
+		private System.Windows.Forms.Button B_Test_OnPause;
+		private System.Windows.Forms.Button B_Test_OnReset;
+		private System.Windows.Forms.Button B_Test_OnResume;
+		private System.Windows.Forms.Button B_Test_OnUndoSplit;
+		private System.Windows.Forms.Button B_Test_OnRedSplitGold;
+		private System.Windows.Forms.Button B_Test_OnGreenBestSplit;
 		private System.Windows.Forms.Button B_Test_OnRedSplitSavedTime;
-		private System.Windows.Forms.Button B_Test_OnRedSplitLostTime;
 		private System.Windows.Forms.Button B_Test_OnGreenSplitSaved;
+		private System.Windows.Forms.Button B_Test_OnRedSplitLostTime;
 		private System.Windows.Forms.Button B_Test_OnGreenSplitLost;
+		private System.Windows.Forms.TableLayoutPanel tableLayoutPanel4;
+		private System.Windows.Forms.CheckBox CB_Limit_OnPBLost;
 	}
 }

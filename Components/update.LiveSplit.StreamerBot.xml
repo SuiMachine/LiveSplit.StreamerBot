@@ -1,4 +1,16 @@
 <updates>
+    <update version="0.7.2">
+        <files>
+            <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
+        </files>
+        <changelog>
+            <change>Fixed a bug with automatic reconnect that could result in LiveSplit freezing due to UI being updated with a wrong thread.</change>
+            <change>Messages are now sent in 10ms intervals to allow for StreamerBot to process them (due to the bug in StreamerBot that can result in a message processing being interrupted if 2 or more messages arrive over websocket in very short amount of time).</change>
+            <change>Added OnRegainPBPace message.</change>
+            <change>When handling OnLostPBPace, the component now compares against previous splits instead of using flags.</change>
+            <change>Added an option to reduce the amount of OnLostPBPace messages (enabled by default), to only notify StreamerBot when PB pace was lost.</change>
+        </changelog>
+    </update>
     <update version="0.7.1">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />

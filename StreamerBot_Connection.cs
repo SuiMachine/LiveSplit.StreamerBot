@@ -4,6 +4,7 @@ using Newtonsoft.Json;
 using System;
 using System.Data;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using WebSocketSharp;
 
 
@@ -22,6 +23,9 @@ namespace LiveSplit.StreamerBot
 		private System.Timers.Timer m_ReconnectTimer;
 		private int m_FailureCounter = 0;
 		public bool IsConnected => webSocket != null && webSocket.IsAlive;
+
+		public bool LimitLostPBMessages => m_settingsForm.LimitOnPBLostMessages;
+		private volatile bool m_SocketBusy = false;
 
 		public static StreamerBot_Connection GetInstance()
 		{
@@ -173,6 +177,7 @@ namespace LiveSplit.StreamerBot
 			Log("Connected!");
 			OnConnectionChanged?.Invoke(true);
 			m_FailureCounter = 0;
+			m_SocketBusy = false;
 		}
 
 		public void Log(string message, bool alwaysLog = false)
@@ -233,13 +238,27 @@ namespace LiveSplit.StreamerBot
 #endif
 
 				Log($"Sending {message.EventType}");
-				webSocket.SendAsync(convert, new Action<bool>((success) =>
+				Task.Run(async () =>
 				{
-					if (!success)
+					//There seems to be a problem with StreamerBot
+					//where if it receives a message before the current one is processed
+					//it will interrupt processing the current message and process the new one instead
+					//So here is a dirty hack
+					while (m_SocketBusy)
+						await Task.Delay(10);
+
+					m_SocketBusy = true;
+					webSocket.SendAsync(convert, new Action<bool>(async (success) =>
 					{
-						LogError("Failed to send");
-					}
-				}));
+						if (!success)
+						{
+							LogError("Failed to send");
+						}
+					}));
+					await Task.Delay(10);
+					m_SocketBusy = false;
+				});
+
 			}
 		}
 	}

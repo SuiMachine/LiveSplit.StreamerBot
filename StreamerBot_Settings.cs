@@ -3,6 +3,7 @@ using LiveSplit.StreamerBot.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -11,6 +12,7 @@ namespace LiveSplit.StreamerBot
 {
 	public partial class StreamerBot_Settings : UserControl
 	{
+		SynchronizationContext windowSychronizationContext = SynchronizationContext.Current;
 		private bool Loaded;
 		[LiveSplitStreamerBotStoreLayoutSetting]
 		[LiveSplitStreamerBotSettingsAttributeBool("Autoconnect", false)]
@@ -19,6 +21,10 @@ namespace LiveSplit.StreamerBot
 		[LiveSplitStreamerBotStoreLayoutSetting]
 		[LiveSplitStreamerBotSettingsAttributeString("Api_Address", "ws://127.0.0.1:9090")]
 		public string Api_Address { get; set; }
+
+		[LiveSplitStreamerBotStoreLayoutSetting]
+		[LiveSplitStreamerBotSettingsAttributeBool("LimitOnPBLostMessages", true)]
+		public bool LimitOnPBLostMessages { get; set; }
 
 		[LiveSplitStreamerBotStoreLayoutSetting]
 		[LiveSplitStreamerBotSettingsAttributeBool("DebugLog", false)]
@@ -37,6 +43,7 @@ namespace LiveSplit.StreamerBot
 			this.CB_Autoconnect.DataBindings.Add("Checked", this, nameof(Autoconnect), false, DataSourceUpdateMode.OnPropertyChanged);
 			this.TB_Address.DataBindings.Add("Text", this, nameof(Api_Address), false, DataSourceUpdateMode.OnPropertyChanged);
 			this.CB_Log_DebugMessages.DataBindings.Add("Checked", this, nameof(DebugLog), false, DataSourceUpdateMode.OnPropertyChanged);
+			this.CB_Limit_OnPBLost.DataBindings.Add("Checked", this, nameof(LimitOnPBLostMessages), false, DataSourceUpdateMode.OnPropertyChanged);
 
 			// defaults
 			ApplyDefaults();
@@ -336,6 +343,13 @@ namespace LiveSplit.StreamerBot
 				{
 					AppendMessage(t);
 				}));
+			}
+			else if (SynchronizationContext.Current != windowSychronizationContext)
+			{
+				windowSychronizationContext.Post(new SendOrPostCallback((o) =>
+				{
+					AppendMessage(t);
+				}), null);
 			}
 			else
 			{

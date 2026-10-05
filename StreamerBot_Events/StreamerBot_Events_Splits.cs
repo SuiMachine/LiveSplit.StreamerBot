@@ -114,7 +114,28 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 		public class OnRunFinishedWithoutPB : OnSplit
 		{
 			public override EventTypeE EventType => EventTypeE.OnRunFinishedWithoutPB;
-			internal OnRunFinishedWithoutPB(LiveSplitState state) : base(state) { }
+			public TimeSpan RunDeltaAgainstPB;
+
+			internal OnRunFinishedWithoutPB(LiveSplitState state) : base(state)
+			{
+				var currentTime = state.CurrentTime[state.CurrentTimingMethod].GetValueOrDefault();
+				var pbTime = state.Run[state.Run.Count - 1].PersonalBestSplitTime[state.CurrentTimingMethod].GetValueOrDefault();
+
+				RunDeltaAgainstPB = currentTime - pbTime;
+			}
+		}
+
+		public class OnRegainPBPace : StreamerBot_Event
+		{
+			public override EventTypeE EventType => EventTypeE.OnRegainPBPace;
+			public int CurrentSplitIndex;
+			public string CurrentSplitName;
+
+			public OnRegainPBPace(LiveSplitState state) : base(state)
+			{
+				this.CurrentSplitIndex = state.CurrentSplitIndex;
+				this.CurrentSplitName = state.CurrentSplit?.Name ?? "";
+			}
 		}
 
 		public class OnLostPBPace : StreamerBot_Event

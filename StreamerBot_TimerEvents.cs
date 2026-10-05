@@ -1,9 +1,7 @@
 ﻿using LiveSplit.Model;
 using LiveSplit.Streamerbot.StreamerBot_Events;
 using System;
-using System.Linq;
 using System.Threading;
-using static System.Windows.Forms.AxHost;
 
 namespace LiveSplit.StreamerBot
 {
@@ -13,8 +11,8 @@ namespace LiveSplit.StreamerBot
 		private Event_SplitData runProperties;
 		private bool m_ShouldRunPolling = false;
 		private bool m_CheckTimerThreadRunning = false;
+		private bool m_RunWasAheadOfPBFlag = true; //This is used for handling cases like Undo, where we won't have an information that allows us to figure out if the split we undid was ahead of PB or not.
 		private Thread m_CheckTimerThread = null;
-		private bool m_LastPaceWasBehindPB;
 
 		public void RegisterEvents(LiveSplitState state, StreamerBot_Connection streamerBotConnection)
 		{
@@ -102,9 +100,9 @@ namespace LiveSplit.StreamerBot
 			LiveSplitState state = (LiveSplitState)sender;
 			if (state.CurrentSplit != null)
 			{
-				//Todo = secure this?
-				var currentTime = state.Run[state.CurrentSplitIndex - 1].SplitTime[state.CurrentTimingMethod];
-				var pbTime = state.Run[state.CurrentSplitIndex - 1].Comparisons[state.CurrentComparison][state.CurrentTimingMethod];
+				//Do we need to secure this?
+				var currentTime = state.Run[state.CurrentSplitIndex - 1].SplitTime[state.CurrentTimingMethod].GetValueOrDefault();
+				var pbTime = state.Run[state.CurrentSplitIndex - 1].PersonalBestSplitTime[state.CurrentTimingMethod].GetValueOrDefault();
 
 				if (currentTime > pbTime)
 				{
@@ -112,14 +110,19 @@ namespace LiveSplit.StreamerBot
 				}
 				else
 				{
+					bool lastPaceWasBehindPB = WasLastPaceBehindPB(state, lookUpPrevious: true);
 					streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnGreenSplit(state));
-					m_LastPaceWasBehindPB = false;
+					if (lastPaceWasBehindPB)
+					{
+						streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnRegainPBPace(state));
+						m_RunWasAheadOfPBFlag = true;
+					}
 				}
 			}
 			else if (state.CurrentPhase == TimerPhase.Ended)
 			{
-				var currentTime = state.Run[state.CurrentSplitIndex - 1].SplitTime[state.CurrentTimingMethod];
-				var pbTime = state.Run[state.CurrentSplitIndex - 1].Comparisons[state.CurrentComparison][state.CurrentTimingMethod];
+				var currentTime = state.Run[state.CurrentSplitIndex - 1].SplitTime[state.CurrentTimingMethod].GetValueOrDefault();
+				var pbTime = state.Run[state.CurrentSplitIndex - 1].PersonalBestSplitTime[state.CurrentTimingMethod].GetValueOrDefault();
 
 				if (currentTime > pbTime)
 				{
@@ -138,6 +141,7 @@ namespace LiveSplit.StreamerBot
 			var state = (LiveSplitState)sender;
 			streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnStart(state));
 			bool hasAutosplitter = state.Run.AutoSplitter != null || state.IsGameTimeInitialized;
+			m_RunWasAheadOfPBFlag = true;
 
 			m_ShouldRunPolling = true;
 			m_CheckTimerThread = new Thread(() =>
@@ -186,8 +190,10 @@ namespace LiveSplit.StreamerBot
 					{
 						if (newTime > splitTime && splitTime >= lastTime)
 						{
-							streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnLostPBPace(state, m_LastPaceWasBehindPB));
-							m_LastPaceWasBehindPB = false;
+							bool lastPaceWasBehindPB = WasLastPaceBehindPB(state, lookUpPrevious: false);
+							if (!StreamerBot_Connection.GetInstance().LimitLostPBMessages || !lastPaceWasBehindPB)
+								streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnLostPBPace(state, lastPaceWasBehindPB));
+							m_RunWasAheadOfPBFlag = false;
 						}
 					}
 				}
@@ -201,9 +207,37 @@ namespace LiveSplit.StreamerBot
 #endif
 		}
 
-		private void State_OnUndoSplit(object sender, EventArgs e) => streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnUndoSplit((LiveSplitState)sender));
+		private void State_OnUndoSplit(object sender, EventArgs e)
+		{
+			LiveSplitState state = (LiveSplitState)sender;
+			if (m_RunWasAheadOfPBFlag)
+			{
+				var currentTime = state.CurrentTime[state.CurrentTimingMethod].GetValueOrDefault();
+				var splitTime = state.Run[state.CurrentSplitIndex].PersonalBestSplitTime[state.CurrentTimingMethod].GetValueOrDefault();
+				if (currentTime > splitTime)
+				{
+					streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnLostPBPace(state, WasLastPaceBehindPB(state, lookUpPrevious: true)));
+					m_RunWasAheadOfPBFlag = false;
+				}
+			}
+			streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnUndoSplit(state));
+		}
 
 		private void State_OnSkipSplit(object sender, EventArgs e) => streamerBotConnection.SendMessage(new StreamerBot_Events_Splits.OnSkipSplit((LiveSplitState)sender));
+
+		private bool WasLastPaceBehindPB(LiveSplitState state, bool lookUpPrevious)
+		{
+			int offset = lookUpPrevious ? 2 : 1; //If the split changes, technically you want to check not just last, but the one before that - but you don't want to do that if you check current
+			if (state.CurrentSplit == null || state.CurrentSplitIndex < offset)
+				return false;
+
+			var currentSplintIndex = state.CurrentSplitIndex;
+
+			var timeOnPreviousSplit = state.Run[currentSplintIndex - offset].SplitTime[state.CurrentTimingMethod].GetValueOrDefault();
+			var timeOnPreviousSplitPB = state.Run[currentSplintIndex - offset].PersonalBestSplitTime[state.CurrentTimingMethod].GetValueOrDefault();
+
+			return timeOnPreviousSplit > timeOnPreviousSplitPB;
+		}
 
 		public void RequestRunData(LiveSplitState state)
 		{
