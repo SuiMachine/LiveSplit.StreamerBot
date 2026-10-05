@@ -3,6 +3,7 @@ using LiveSplit.StreamerBot.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Xml;
@@ -11,6 +12,7 @@ namespace LiveSplit.StreamerBot
 {
 	public partial class StreamerBot_Settings : UserControl
 	{
+		SynchronizationContext windowSychronizationContext = SynchronizationContext.Current;
 		private bool Loaded;
 		[LiveSplitStreamerBotStoreLayoutSetting]
 		[LiveSplitStreamerBotSettingsAttributeBool("Autoconnect", false)]
@@ -341,6 +343,13 @@ namespace LiveSplit.StreamerBot
 				{
 					AppendMessage(t);
 				}));
+			}
+			else if (SynchronizationContext.Current != windowSychronizationContext)
+			{
+				windowSychronizationContext.Post(new SendOrPostCallback((o) =>
+				{
+					AppendMessage(t);
+				}), null);
 			}
 			else
 			{
