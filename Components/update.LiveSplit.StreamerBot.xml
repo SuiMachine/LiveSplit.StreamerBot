@@ -1,4 +1,12 @@
 <updates>
+    <update version="0.7.3">
+        <files>
+            <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />
+        </files>
+        <changelog>
+            <change>Fixed a bug where OnSplit events mostly emitted SavedTime instead of LostTime.</change>
+        </changelog>
+    </update>
     <update version="0.7.2">
         <files>
             <file path="Components/LiveSplit.StreamerBot.dll" status="changed" />

@@ -179,6 +179,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 
 					TimeSpan personalBestSegmentTime = lastSplit.BestSegmentTime[state.CurrentTimingMethod].GetValueOrDefault();
 					TimeSpan lastSegmentTime = lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault() - (state.CurrentSplitIndex - 2 >= 0 ? state.Run[state.CurrentSplitIndex - 2].SplitTime[state.CurrentTimingMethod].GetValueOrDefault() : TimeSpan.Zero);
+					TimeSpan comparisonSegmentTime = lastSplit.Comparisons[state.CurrentComparison][state.CurrentTimingMethod].GetValueOrDefault() - (state.CurrentSplitIndex - 2 >= 0 ? state.Run[state.CurrentSplitIndex - 2].Comparisons[state.CurrentComparison][state.CurrentTimingMethod].GetValueOrDefault() : TimeSpan.Zero);
 
 					this.PreviousSplitName = lastSplit.Name;
 					this.SplitTimeDifference = lastSplit.SplitTime[state.CurrentTimingMethod].GetValueOrDefault() - lastSplit.Comparisons[state.CurrentComparison][state.CurrentTimingMethod].GetValueOrDefault();
@@ -191,7 +192,7 @@ namespace LiveSplit.Streamerbot.StreamerBot_Events
 
 					if (lastSegmentTime < personalBestSegmentTime)
 						this.SegmentResult = SegmentResultE.BestSegment;
-					else if (lastSegmentTime < lastSplit.Comparisons[state.CurrentComparison][state.CurrentTimingMethod].GetValueOrDefault())
+					else if (lastSegmentTime < comparisonSegmentTime)
 						this.SegmentResult = SegmentResultE.SavedTime;
 					else
 						this.SegmentResult = SegmentResultE.LostTime;
